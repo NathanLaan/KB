@@ -8,7 +8,7 @@ namespace KB.Lib.Data
     public class EntryVote : BaseEntity
     {
         public int EntryID { get; set; }
-        public int UserID { get; set; }
+        public int AccountID { get; set; }
         public int Score { get; set; }
     }
 }

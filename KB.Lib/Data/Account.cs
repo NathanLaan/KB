@@ -5,7 +5,7 @@ using System.Text;
 
 namespace KB.Lib.Data
 {
-    public class User: BaseEntity
+    public class Account: BaseEntity
     {
         public string Name { get; set; }
         public string Password { get; set; }

@@ -43,7 +43,7 @@
     <Compile Include="Data\Entry.cs" />
     <Compile Include="Data\EntryVote.cs" />
     <Compile Include="Data\IDataRepository.cs" />
-    <Compile Include="Data\User.cs" />
+    <Compile Include="Data\Account.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
