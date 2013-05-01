@@ -24,6 +24,12 @@ namespace KB.Lib.Data
             throw new NotImplementedException();
         }
 
+
+
+        #region Account
+
+        private static readonly string SQL_ACCOUNT_INSERT = "INSERT INTO Account (Name,Email,Password,PasswordSalt) VALUES(@name,@email,@password,@passwordSalt); SELECT @@identity;";
+
         public Account GetAccount(int id)
         {
             throw new NotImplementedException();
@@ -41,9 +47,23 @@ namespace KB.Lib.Data
 
         public Account AddAccount(Account account)
         {
+            try
+            {
+                SqlConnection sqlConnection = new SqlConnection(this.connectionString);
+                SqlCommand sqlCommand = new SqlCommand(ADODataRepository.SQL_ACCOUNT_INSERT, sqlConnection);
+                object returnValue = sqlCommand.ExecuteScalar();
 
+                int id = int.Parse(returnValue.ToString());
 
-            return account;
+                return account;
+            }
+            catch
+            {
+                return null;
+            }
         }
+
+        #endregion
+
     }
 }
