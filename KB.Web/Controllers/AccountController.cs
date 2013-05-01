@@ -27,6 +27,10 @@ namespace KB.Web.Controllers
         {
             return View();
         }
+        public ActionResult All()
+        {
+            return View();
+        }
 
     }
 }
