@@ -9,5 +9,6 @@ namespace KB.Lib.Data
         void SaveEntry(Entry em);
 
         Account GetAccount(int id);
+        bool ValidateUser(string username, string password);
     }
 }

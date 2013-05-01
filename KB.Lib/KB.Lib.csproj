@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\ADODataRepository.cs" />
     <Compile Include="Entity\BaseEntity.cs" />
     <Compile Include="Entity\Entry.cs" />
     <Compile Include="Entity\EntryVote.cs" />
