@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using KB.Web.Models;
 using KB.Lib.Data;
+using KB.Lib.Entity;
 
 namespace KB.Web.Controllers
 {
@@ -32,7 +33,7 @@ namespace KB.Web.Controllers
             if (ModelState.IsValid)
             {
 
-                if (this.dataRepository.ValidateUser(model.Username, model.Password))
+                if (this.dataRepository.ValidateAccount(model.Username, model.Password))
                 {
                     
                     FormsAuthentication.SetAuthCookie(model.Username, model.RememberMe);
@@ -55,9 +56,36 @@ namespace KB.Web.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-        public ActionResult Register()
+        public ActionResult Register(AccountRegisterModel model)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+                    Account account = this.dataRepository.AddAccount(model.ToAccount());
+
+                    if (account != null && account.ID >= 0)
+                    {
+                        FormsAuthentication.SetAuthCookie(model.Username, false /* createPersistentCookie */);
+                        return RedirectToAction("Index", "Default");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Unable to create account");
+                    }
+                }
+                catch (Exception e)
+                {
+                    //
+                    // TODO: TEMP!
+                    //
+                    ModelState.AddModelError("", e.ToString());
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
         }
         public ActionResult PasswordReset()
         {

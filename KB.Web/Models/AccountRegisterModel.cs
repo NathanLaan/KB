@@ -2,14 +2,18 @@
 using System.Web;
 using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
+using KB.Lib.Entity;
 
 namespace KB.Web.Models
 {
     public class AccountRegisterModel
     {
+
+        public static readonly int MinPasswordLength = System.Web.Security.Membership.MinRequiredPasswordLength;
+
         [Required]
         [Display(Name = "User name")]
-        public string UserName { get; set; }
+        public string Username { get; set; }
 
         [Required]
         [DataType(DataType.EmailAddress)]
@@ -26,5 +30,15 @@ namespace KB.Web.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirm password must be the same.")]
         public string ConfirmPassword { get; set; }
+
+        public Account ToAccount()
+        {
+            Account account = new Account();
+            account.Name = this.Username;
+            account.Email = this.Email;
+            account.Password = this.Password;
+            return account;
+        }
+
     }
 }

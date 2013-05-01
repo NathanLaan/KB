@@ -5,8 +5,6 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="An ode to Metro.">
-    <meta name="author" content="Thomas Park">
 
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -66,14 +64,14 @@
        <a class="brand" href="/">KB</a>
        <div class="nav-collapse collapse" id="main-menu">
         <ul class="nav" id="main-menu-left">
-          <li><a href="/Entry/">Entries</a></li>
-          <li><a href="/Account/All/">Users</a></li>
-          <li><a href="/Search/">Search</a></li>
+          <li>@Html.ActionLink("Entries", "Index", "Entry")</li>
+          <li>@Html.ActionLink("Users", "All", "Account")</li>
+          <li>@Html.ActionLink("Search", "Index", "Search")</li>
         </ul>
         <ul class="nav pull-right" id="main-menu-right">
-          <li><a href="/Account/Login">Login</a></li>
-          <li><a href="/Account/Register">Register</a></li>
-          <li><a href="/About">About</a></li>
+            <li>@Html.Partial("_AccountPartial")</li>
+          <li>@Html.ActionLink("Register", "Register", "Account")</li>
+          <li>@Html.ActionLink("About", "Index", "About")</li>
         </ul>
        </div>
      </div>
@@ -82,7 +80,7 @@
 
 <div class="container">
     
-        @RenderBody()
+    @RenderBody()
 
     <hr/>
     <footer id="footer">

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
+using KB.Lib.Entity;
 
 namespace KB.Lib.Data
 {
@@ -13,7 +14,7 @@ namespace KB.Lib.Data
             this.connectionString = connectionString;
         }
 
-        public Entity.Entry GetEntry(int id)
+        public Entry GetEntry(int id)
         {
             throw new NotImplementedException();
         }
@@ -23,12 +24,12 @@ namespace KB.Lib.Data
             throw new NotImplementedException();
         }
 
-        public Entity.Account GetAccount(int id)
+        public Account GetAccount(int id)
         {
             throw new NotImplementedException();
         }
 
-        public bool ValidateUser(string username, string password)
+        public bool ValidateAccount(string username, string password)
         {
             SqlConnection sc = new SqlConnection(this.connectionString);
             SqlCommand c = new SqlCommand("SELECT A.ID,A.Email,A.PasswordSalt FROM Account A WHERE A.Name=@Username", sc);
@@ -36,6 +37,13 @@ namespace KB.Lib.Data
 
             object results = c.ExecuteScalar();
             return true;
+        }
+
+        public Account AddAccount(Account account)
+        {
+
+
+            return account;
         }
     }
 }
