@@ -18,11 +18,6 @@ namespace KB.Web
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Default", action = "Index", id = UrlParameter.Optional }
             );
-            routes.MapRoute(
-                name: "Entry",
-                url: "entry/{action}/{id}",
-                defaults: new { controller = "Entry", action = "Index", id = UrlParameter.Optional }
-            );
         }
     }
 }

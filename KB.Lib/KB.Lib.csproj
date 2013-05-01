@@ -44,6 +44,7 @@
     <Compile Include="Data\EntryVote.cs" />
     <Compile Include="Data\IDataRepository.cs" />
     <Compile Include="Data\Account.cs" />
+    <Compile Include="Data\Search.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
