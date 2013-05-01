@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace KB.Lib.Data
+namespace KB.Lib.Entity
 {
-    public abstract class BaseEntity
+    public class Search
     {
-        public int ID { get; set; }
+        public string QueryString { get; set; }
     }
 }

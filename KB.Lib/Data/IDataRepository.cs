@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using KB.Lib.Entity;
 
 namespace KB.Lib.Data
 {
     public interface IDataRepository
     {
-        Entry Get(int id);
-        void Save(Entry em);
+        Entry GetEntry(int id);
+        void SaveEntry(Entry em);
+
+        Account GetAccount(int id);
     }
 }
