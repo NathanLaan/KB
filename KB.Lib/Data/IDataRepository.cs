@@ -23,7 +23,7 @@ namespace KB.Lib.Data
 
         Account GetAccount(int id);
 
-        bool ValidateAccount(string username, string password);
+        Account GetAccount(string accountName);
 
         #endregion
 

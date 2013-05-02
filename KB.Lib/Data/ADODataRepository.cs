@@ -34,15 +34,9 @@ namespace KB.Lib.Data
         {
             throw new NotImplementedException();
         }
-
-        public bool ValidateAccount(string username, string password)
+        public Account GetAccount(string accountName)
         {
-            SqlConnection sc = new SqlConnection(this.connectionString);
-            SqlCommand c = new SqlCommand("SELECT A.ID,A.Email,A.PasswordSalt FROM Account A WHERE A.Name=@Username", sc);
-            c.Parameters.AddWithValue("@Username", username);
-
-            object results = c.ExecuteScalar();
-            return true;
+            throw new NotImplementedException();
         }
 
         public Account AddAccount(Account account)

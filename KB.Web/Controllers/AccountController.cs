@@ -38,28 +38,43 @@ namespace KB.Web.Controllers
             FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Default");
         }
+
+
         public ActionResult Login(AccountLoginModel model, string returnUrl)
         {
             if (ModelState.IsValid)
             {
-
-                if (this.dataRepository.ValidateAccount(model.Username, model.Password))
+                Account account = this.dataRepository.GetAccount(model.Username);
+                if (account != null)
                 {
 
-                    FormsAuthentication.SetAuthCookie(model.Username, model.RememberMe);
-                    if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
-                        && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                    //
+                    // TODO: check password
+                    //
+                    SecurityUtil.EncryptedPassword encryptedPassword = SecurityUtil.GenerateEncryptedPassword(model.Password, account.PasswordSalt);
+
+                    if (encryptedPassword.Password == account.Password)
                     {
-                        return Redirect(returnUrl);
+
+                        FormsAuthentication.SetAuthCookie(model.Username, model.RememberMe);
+                        if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
+                            && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                        {
+                            return Redirect(returnUrl);
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Default");
+                        }
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Default");
+                        ModelState.AddModelError("", "The username or password is incorrect.");
                     }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
+                    ModelState.AddModelError("", "The username or password is incorrect.");
                 }
             }
             else
@@ -70,6 +85,8 @@ namespace KB.Web.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
+
         public ActionResult Register(AccountRegisterModel model)
         {
             if (ModelState.IsValid)

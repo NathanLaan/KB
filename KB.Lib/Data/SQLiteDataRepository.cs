@@ -30,16 +30,44 @@ namespace KB.Lib.Data
 
         #region Account
 
+
         private static readonly string SQL_ACCOUNT_INSERT = "INSERT INTO [Account] (Name,Email,Password,PasswordSalt) VALUES(@Name,@Email,@Password,@PasswordSalt); SELECT last_insert_rowid();";
+        private static readonly string SQL_ACCOUNT_SELECT = "SELECT ID,Name,Email,Password,PasswordSalt FROM [Account] WHERE Name=@Name;";
 
         public Account GetAccount(int id)
         {
             throw new NotImplementedException();
         }
-
-        public bool ValidateAccount(string username, string password)
+        public Account GetAccount(string accountName)
         {
-            return true;
+            try
+            {
+                Account account = new Account();
+                using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
+                {
+                    sqliteConnection.Open();
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ACCOUNT_SELECT, sqliteConnection);
+                    sqlCommand.Parameters.AddWithValue("@Name", accountName);
+
+                    SQLiteDataReader reader = sqlCommand.ExecuteReader();
+                    //
+                    // Read the first record only
+                    //
+                    if (reader.Read())
+                    {
+                        account.ID = reader.GetInt32(0);
+                        account.Name = reader.GetString(1);
+                        account.Email = reader.GetString(2);
+                        account.Password = reader.GetString(3);
+                        account.PasswordSalt = reader.GetString(4);
+                    }
+                }
+                return account;
+            }
+            catch (Exception exception)
+            {
+                return null;
+            }
         }
 
         public Account AddAccount(Account account)
@@ -62,7 +90,7 @@ namespace KB.Lib.Data
 
                 return account;
             }
-            catch(Exception e)
+            catch (Exception exception)
             {
                 return null;
             }
