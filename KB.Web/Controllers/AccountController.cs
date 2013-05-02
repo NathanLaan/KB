@@ -5,6 +5,7 @@ using System.Web.Security;
 using KB.Web.Models;
 using KB.Lib.Data;
 using KB.Lib.Entity;
+using KB.Lib.Utility;
 
 namespace KB.Web.Controllers
 {
@@ -67,11 +68,15 @@ namespace KB.Web.Controllers
                 try
                 {
 
-                    Account account = this.dataRepository.AddAccount(model.ToAccount());
+                    Account account = model.ToAccount();
+                    SecurityUtil.EncryptedPassword encryptedPassword = SecurityUtil.GenerateEncryptedPassword(account.Password);
+                    account.Password = encryptedPassword.Password;
+                    account.PasswordSalt = encryptedPassword.PasswordSalt;
+                    account = this.dataRepository.AddAccount(account);
 
                     if (account != null && account.ID >= 0)
                     {
-                        FormsAuthentication.SetAuthCookie(model.Username, false /* createPersistentCookie */);
+                        FormsAuthentication.SetAuthCookie(account.Name, true /* createPersistentCookie */);
                         return RedirectToAction("Index", "Default");
                     }
                     else

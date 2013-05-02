@@ -59,6 +59,7 @@
     <Compile Include="Entity\Account.cs" />
     <Compile Include="Entity\Search.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\SecurityUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
