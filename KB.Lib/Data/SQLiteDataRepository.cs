@@ -1,17 +1,19 @@
 ﻿using System;
-using System.Data.SqlClient;
+using System.Text;
+using System.Data.SQLite;
 using KB.Lib.Entity;
 
 namespace KB.Lib.Data
 {
-    public class ADODataRepository: IDataRepository
+    public class SQLiteDataRepository: IDataRepository
     {
+        
 
         private string connectionString;
 
-        public ADODataRepository(string connectionString)
+        public SQLiteDataRepository(string connectionString)
         {
-            this.connectionString = connectionString;
+            this.connectionString = string.Format("Data Source={0}",connectionString);
         }
 
         public Entry GetEntry(int id)
@@ -37,11 +39,6 @@ namespace KB.Lib.Data
 
         public bool ValidateAccount(string username, string password)
         {
-            SqlConnection sc = new SqlConnection(this.connectionString);
-            SqlCommand c = new SqlCommand("SELECT A.ID,A.Email,A.PasswordSalt FROM Account A WHERE A.Name=@Username", sc);
-            c.Parameters.AddWithValue("@Username", username);
-
-            object results = c.ExecuteScalar();
             return true;
         }
 
@@ -49,10 +46,10 @@ namespace KB.Lib.Data
         {
             try
             {
-                using (SqlConnection sqlConnection = new SqlConnection(this.connectionString))
+                using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
                 {
-                    sqlConnection.Open();
-                    SqlCommand sqlCommand = new SqlCommand(ADODataRepository.SQL_ACCOUNT_INSERT, sqlConnection);
+                    sqliteConnection.Open();
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ACCOUNT_INSERT, sqliteConnection);
                     object returnValue = sqlCommand.ExecuteScalar();
 
                     int id = int.Parse(returnValue.ToString());

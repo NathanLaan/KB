@@ -20,8 +20,8 @@ namespace KB.Web.Controllers
             //
             // TODO: Factory
             //
-            string cs = System.Web.Configuration.WebConfigurationManager.ConnectionStrings["KB"].ConnectionString;
-            this.dataRepository = new ADODataRepository(cs);
+            string cs = System.Web.Configuration.WebConfigurationManager.ConnectionStrings["KB-SQLiteDB"].ConnectionString;
+            this.dataRepository = new SQLiteDataRepository(System.Web.HttpContext.Current.Server.MapPath(cs));
         }
 
         public ActionResult Index()
@@ -35,7 +35,7 @@ namespace KB.Web.Controllers
 
                 if (this.dataRepository.ValidateAccount(model.Username, model.Password))
                 {
-                    
+
                     FormsAuthentication.SetAuthCookie(model.Username, model.RememberMe);
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                         && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
@@ -51,6 +51,10 @@ namespace KB.Web.Controllers
                 {
                     ModelState.AddModelError("", "The user name or password provided is incorrect.");
                 }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Invalid model state.");
             }
 
             // If we got this far, something failed, redisplay form
