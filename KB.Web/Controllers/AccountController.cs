@@ -29,6 +29,15 @@ namespace KB.Web.Controllers
         {
             return View();
         }
+        public ActionResult Manage()
+        {
+            return View();
+        }
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index", "Default");
+        }
         public ActionResult Login(AccountLoginModel model, string returnUrl)
         {
             if (ModelState.IsValid)
@@ -76,7 +85,7 @@ namespace KB.Web.Controllers
 
                     if (account != null && account.ID >= 0)
                     {
-                        FormsAuthentication.SetAuthCookie(account.Name, true /* createPersistentCookie */);
+                        FormsAuthentication.SetAuthCookie(account.Name, true);
                         return RedirectToAction("Index", "Default");
                     }
                     else
