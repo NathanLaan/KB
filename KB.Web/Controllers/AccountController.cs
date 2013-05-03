@@ -9,6 +9,11 @@ using KB.Lib.Utility;
 
 namespace KB.Web.Controllers
 {
+
+    //
+    // http://www.asp.net/mvc/tutorials/older-versions/security/authenticating-users-with-forms-authentication-cs
+    //
+    //
     public class AccountController : Controller
     {
         //
@@ -29,6 +34,8 @@ namespace KB.Web.Controllers
         {
             return View();
         }
+
+        [Authorize]
         public ActionResult Manage()
         {
             return View();

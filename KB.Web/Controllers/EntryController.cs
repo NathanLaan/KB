@@ -24,7 +24,7 @@ namespace KB.Web.Controllers
 
         //
         // GET: /Entry/Create
-
+        [Authorize]
         public ActionResult Create()
         {
             return View();
@@ -33,6 +33,7 @@ namespace KB.Web.Controllers
         //
         // POST: /Entry/Create
 
+        [Authorize]
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
@@ -50,7 +51,7 @@ namespace KB.Web.Controllers
 
         //
         // GET: /Entry/Edit/5
-
+        [Authorize]
         public ActionResult Edit(int id)
         {
             return View();
@@ -58,7 +59,7 @@ namespace KB.Web.Controllers
 
         //
         // POST: /Entry/Edit/5
-
+        [Authorize]
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
@@ -76,7 +77,7 @@ namespace KB.Web.Controllers
 
         //
         // GET: /Entry/Delete/5
-
+        [Authorize]
         public ActionResult Delete(int id)
         {
             return View();
@@ -84,7 +85,7 @@ namespace KB.Web.Controllers
 
         //
         // POST: /Entry/Delete/5
-
+        [Authorize]
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
