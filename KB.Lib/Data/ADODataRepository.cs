@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using KB.Lib.Entity;
 
@@ -59,6 +60,11 @@ namespace KB.Lib.Data
             {
                 return null;
             }
+        }
+
+        public List<Account> GetAccountList()
+        {
+            return null;
         }
 
         #endregion

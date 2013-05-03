@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using KB.Lib.Entity;
 
 namespace KB.Lib.Data
@@ -24,6 +25,8 @@ namespace KB.Lib.Data
         Account GetAccount(int id);
 
         Account GetAccount(string accountName);
+
+        List<Account> GetAccountList();
 
         #endregion
 

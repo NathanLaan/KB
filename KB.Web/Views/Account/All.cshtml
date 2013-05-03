@@ -6,4 +6,28 @@
 }
 
 <h2>All User Accounts</h2>
-<p>TODO: Must be logged in!</p>
+
+<table id="list" class="scroll" cellpadding="0" cellspacing="0"></table>
+<div id="pager" class="scroll" style="text-align:center;"></div>
+
+<script type="text/javascript">
+    jQuery(document).ready(function(){ 
+        jQuery("#list").jqGrid({
+        url: '/Account/AccoutList/',
+        datatype: 'json',
+        mtype: 'POST',
+        colNames:['ID','Name'],
+        colModel :[
+        { name: 'ID', index: 'ID', width: 40, align: 'left' },
+        { name: 'Name', index: 'Name', width: 200, align: 'left' }],
+        pager: jQuery('#pager'),
+        rowNum:10,
+        rowList:[5,10,20,50],
+        sortname: 'Id',
+        sortorder: "desc",
+        viewrecords: true,
+        imgpath: '/css/images',
+        caption: 'KB Users'
+        }); 
+    }); 
+</script>

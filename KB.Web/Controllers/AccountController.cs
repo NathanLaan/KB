@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -6,6 +7,8 @@ using KB.Web.Models;
 using KB.Lib.Data;
 using KB.Lib.Entity;
 using KB.Lib.Utility;
+//AccountList:
+using System.Web.Script.Serialization;
 
 namespace KB.Web.Controllers
 {
@@ -44,6 +47,21 @@ namespace KB.Web.Controllers
         {
             FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Default");
+        }
+
+        public ActionResult AccoutList(string sidx, string sord, int page, int rows)
+        {
+            List<Account> accountList = this.dataRepository.GetAccountList();
+
+            var jsonData = new
+            {
+                total = 1,
+                page = page,
+                records = 3,
+                rows = accountList
+            };
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+
         }
 
 
