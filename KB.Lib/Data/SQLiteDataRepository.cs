@@ -66,12 +66,40 @@ namespace KB.Lib.Data
         }
 
         private static readonly string SQL_ACCOUNT_INSERT = "INSERT INTO [Account] (Name,Email,Password,PasswordSalt) VALUES(@Name,@Email,@Password,@PasswordSalt); SELECT last_insert_rowid();";
-        private static readonly string SQL_ACCOUNT_SELECT = "SELECT ID,Name,Email,Password,PasswordSalt FROM [Account] WHERE Name=@Name;";
+        private static readonly string SQL_ACCOUNT_SELECT_BY_ID = "SELECT ID,Name,Email,Password,PasswordSalt FROM [Account] WHERE ID=@ID;";
+        private static readonly string SQL_ACCOUNT_SELECT_BY_NAME = "SELECT ID,Name,Email,Password,PasswordSalt FROM [Account] WHERE Name=@Name;";
         private static readonly string SQL_ACCOUNT_SELECT_ALL = "SELECT ID,Name,Email,Password,PasswordSalt FROM [Account] ORDER BY ID ASC;";
 
         public Account GetAccount(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Account account = new Account();
+                using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
+                {
+                    sqliteConnection.Open();
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ACCOUNT_SELECT_BY_ID, sqliteConnection);
+                    sqlCommand.Parameters.AddWithValue("@ID", id);
+
+                    SQLiteDataReader reader = sqlCommand.ExecuteReader();
+                    //
+                    // Read the first record only
+                    //
+                    if (reader.Read())
+                    {
+                        account.ID = reader.GetInt32(0);
+                        account.Name = reader.GetString(1);
+                        account.Email = reader.GetString(2);
+                        account.Password = reader.GetString(3);
+                        account.PasswordSalt = reader.GetString(4);
+                    }
+                }
+                return account;
+            }
+            catch (Exception exception)
+            {
+                return null;
+            }
         }
         public Account GetAccount(string accountName)
         {
@@ -81,7 +109,7 @@ namespace KB.Lib.Data
                 using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
                 {
                     sqliteConnection.Open();
-                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ACCOUNT_SELECT, sqliteConnection);
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ACCOUNT_SELECT_BY_NAME, sqliteConnection);
                     sqlCommand.Parameters.AddWithValue("@Name", accountName);
 
                     SQLiteDataReader reader = sqlCommand.ExecuteReader();

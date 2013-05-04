@@ -41,7 +41,9 @@ namespace KB.Web.Controllers
         [Authorize]
         public ActionResult Manage()
         {
-            return View();
+            int id = this.GetFormsAuthenticationID();
+            Account account = this.dataRepository.GetAccount(id);
+            return View(account);
         }
         public ActionResult Logout()
         {
@@ -81,7 +83,7 @@ namespace KB.Web.Controllers
                     if (encryptedPassword.Password == account.Password)
                     {
 
-                        FormsAuthentication.SetAuthCookie(model.Username, model.RememberMe);
+                        this.Login(account);
                         if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                             && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
                         {
@@ -112,6 +114,35 @@ namespace KB.Web.Controllers
         }
 
 
+        private void Login(Account account)
+        {
+            if (account != null && account.ID >= 0)
+            {
+                FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1,
+                    account.Name,
+                    DateTime.Now,
+                    DateTime.Now.AddDays(30),
+                    true,
+                    account.ID.ToString(),
+                    FormsAuthentication.FormsCookiePath);
+
+                // Encrypt the ticket.
+                string encTicket = FormsAuthentication.Encrypt(ticket);
+
+                // Create the cookie.
+                Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, encTicket));
+            }
+        }
+
+
+        public int GetFormsAuthenticationID()
+        {
+            FormsIdentity id = (FormsIdentity)User.Identity;
+            FormsAuthenticationTicket ticket = id.Ticket;
+            return int.Parse(ticket.UserData);
+        }
+
+
         public ActionResult Register(AccountRegisterModel model)
         {
             if (ModelState.IsValid)
@@ -127,7 +158,9 @@ namespace KB.Web.Controllers
 
                     if (account != null && account.ID >= 0)
                     {
-                        FormsAuthentication.SetAuthCookie(account.Name, true);
+                        //FormsAuthentication.SetAuthCookie(account.Name, true);
+                        this.Login(account);
+                        
                         return RedirectToAction("Index", "Default");
                     }
                     else
@@ -151,7 +184,7 @@ namespace KB.Web.Controllers
         {
             return View();
         }
-        public ActionResult All()
+        public ActionResult List()
         {
             return View();
         }

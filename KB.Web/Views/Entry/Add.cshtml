@@ -1,0 +1,39 @@
+﻿@model KB.Web.Models
+
+@{
+    ViewBag.Title = "KB Add Entry";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Add Entry</h2>
+@using (Html.BeginForm()) {
+    <div>
+        <fieldset>
+
+            <div class="editor-label">
+                @Html.LabelFor(m => m.Username)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(m => m.Username)
+                @Html.ValidationMessageFor(m => m.Username)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(m => m.Password)
+            </div>
+            <div class="editor-field">
+                @Html.PasswordFor(m => m.Password)
+                @Html.ValidationMessageFor(m => m.Password)
+            </div>
+
+            <div class="editor-label">
+                @Html.CheckBoxFor(m => m.RememberMe)
+                @Html.LabelFor(m => m.RememberMe)
+            </div>
+
+            <p>
+                <input type="submit" value="Log On" />
+            </p>
+        </fieldset>
+    </div>
+}

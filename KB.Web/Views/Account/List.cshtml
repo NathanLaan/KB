@@ -5,11 +5,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>All User Accounts</h2>
 
+<div class="row">
+    <div class="span12">
+<h2>All User Accounts</h2>
 <table id="list" class="scroll" cellpadding="0" cellspacing="0"></table>
 <div id="pager" class="scroll" style="text-align:center;"></div>
-
+    </div>
+    </div>
 <script type="text/javascript">
     jQuery(document).ready(function(){ 
         jQuery("#list").jqGrid({
@@ -18,16 +21,17 @@
         mtype: 'POST',
         colNames:['ID','Name'],
         colModel :[
-        { name: 'ID', index: 'ID', width: 40, align: 'left' },
-        { name: 'Name', index: 'Name', width: 200, align: 'left' }],
+            { name: 'ID', index: 'ID', width: 40, align: 'left' },
+            { name: 'Name', index: 'Name', width: 200, align: 'left' }],
         pager: jQuery('#pager'),
         rowNum:10,
         rowList:[5,10,20,50],
-        sortname: 'Id',
+        sortname: 'ID',
         sortorder: "desc",
         viewrecords: true,
         imgpath: '/css/images',
-        caption: 'KB Users'
+        autowidth: true,
+        height: 300
         }); 
     }); 
 </script>
