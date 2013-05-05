@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Web;
 using System.Web.Mvc;
+using KB.Web.Models;
+using KB.Lib.Entity;
 
 namespace KB.Web.Controllers
 {
@@ -23,30 +25,26 @@ namespace KB.Web.Controllers
         }
 
         //
-        // GET: /Entry/Create
+        // GET: /Entry/Add
         [Authorize]
-        public ActionResult Create()
+        public ActionResult Add(EntryModel model)
         {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // TODO: Add insert logic here
+                    Entry entry = new Entry();
+                    //entry.AccountID
+
+                    return RedirectToAction("Index");
+                }
+                catch
+                {
+                    return View();
+                }
+            }
             return View();
-        }
-
-        //
-        // POST: /Entry/Create
-
-        [Authorize]
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
         }
 
         //

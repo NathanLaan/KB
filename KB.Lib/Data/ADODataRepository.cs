@@ -20,7 +20,7 @@ namespace KB.Lib.Data
             throw new NotImplementedException();
         }
 
-        public void SaveEntry(Entity.Entry em)
+        public Entry AddEntry(Entity.Entry em)
         {
             throw new NotImplementedException();
         }

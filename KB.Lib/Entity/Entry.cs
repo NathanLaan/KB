@@ -11,7 +11,7 @@ namespace KB.Lib.Entity
         public int AccountID { get; set; }
         public string Title { get; set; }
         public string Contents { get; set; }
-        public DateTime Created { get; set; }
+        public DateTime Timestamp { get; set; }
         public List<string> TagList { get; set; }
     }
 }

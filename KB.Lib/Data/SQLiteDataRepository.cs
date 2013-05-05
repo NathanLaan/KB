@@ -11,6 +11,8 @@ namespace KB.Lib.Data
 
         private string connectionString;
 
+        private static readonly string SQL_ENTITY_INSERT = "INSERT INTO [Entity] (ParentID,AccountID,Title,Contents,Timestamp) VALUES(@ParentID,@AccountID,@Title,@Contents,@Timestamp); SELECT last_insert_rowid();";
+        
         public SQLiteDataRepository(string connectionString)
         {
             this.connectionString = string.Format("Data Source={0}",connectionString);
@@ -21,14 +23,43 @@ namespace KB.Lib.Data
             throw new NotImplementedException();
         }
 
-        public void SaveEntry(Entity.Entry em)
+        public Entry AddEntry(Entry entry)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
+                {
+                    sqliteConnection.Open();
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ENTITY_INSERT, sqliteConnection);
+                    //ParentID,AccountID,Title,Content,Timestamp
+                    sqlCommand.Parameters.AddWithValue("@ParentID", entry.ParentID);
+                    sqlCommand.Parameters.AddWithValue("@AccountID", entry.AccountID);
+                    sqlCommand.Parameters.AddWithValue("@Title", entry.Title);
+                    sqlCommand.Parameters.AddWithValue("@Content", entry.Contents);
+                    sqlCommand.Parameters.AddWithValue("@Timestamp", entry.Timestamp);
+                    object returnValue = sqlCommand.ExecuteScalar();
+
+                    int id = int.Parse(returnValue.ToString());
+                    entry.ID = id;
+                }
+
+                return entry;
+            }
+            catch (Exception exception)
+            {
+                return null;
+            }
         }
 
 
 
         #region Account
+
+
+        private static readonly string SQL_ACCOUNT_INSERT = "INSERT INTO [Account] (Name,Email,Password,PasswordSalt) VALUES(@Name,@Email,@Password,@PasswordSalt); SELECT last_insert_rowid();";
+        private static readonly string SQL_ACCOUNT_SELECT_BY_ID = "SELECT ID,Name,Email,Password,PasswordSalt FROM [Account] WHERE ID=@ID;";
+        private static readonly string SQL_ACCOUNT_SELECT_BY_NAME = "SELECT ID,Name,Email,Password,PasswordSalt FROM [Account] WHERE Name=@Name;";
+        private static readonly string SQL_ACCOUNT_SELECT_ALL = "SELECT ID,Name,Email,Password,PasswordSalt FROM [Account] ORDER BY ID ASC;";
 
 
         public List<Account> GetAccountList()
@@ -64,11 +95,6 @@ namespace KB.Lib.Data
 
             return accountList;
         }
-
-        private static readonly string SQL_ACCOUNT_INSERT = "INSERT INTO [Account] (Name,Email,Password,PasswordSalt) VALUES(@Name,@Email,@Password,@PasswordSalt); SELECT last_insert_rowid();";
-        private static readonly string SQL_ACCOUNT_SELECT_BY_ID = "SELECT ID,Name,Email,Password,PasswordSalt FROM [Account] WHERE ID=@ID;";
-        private static readonly string SQL_ACCOUNT_SELECT_BY_NAME = "SELECT ID,Name,Email,Password,PasswordSalt FROM [Account] WHERE Name=@Name;";
-        private static readonly string SQL_ACCOUNT_SELECT_ALL = "SELECT ID,Name,Email,Password,PasswordSalt FROM [Account] ORDER BY ID ASC;";
 
         public Account GetAccount(int id)
         {

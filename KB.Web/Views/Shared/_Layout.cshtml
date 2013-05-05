@@ -64,17 +64,22 @@
         <a class="brand" href="/">KB</a>
         <div class="nav-collapse collapse" id="main-menu">
         <ul class="nav" id="main-menu-left">
-            @if(Request.IsAuthenticated) {
-            <li>@Html.ActionLink(@User.Identity.Name, "Add", "Entry")</li>
-            }
+            <li>@Html.ActionLink("Search", "Index", "Search")</li>
             <li>@Html.ActionLink("Entries", "Index", "Entry")</li>
             <li>@Html.ActionLink("Users", "List", "Account")</li>
-            <li>@Html.ActionLink("Search", "Index", "Search")</li>
+            @if(Request.IsAuthenticated) {
+                <li>@Html.ActionLink("+ Add Entry", "Add", "Entry")</li>
+            }
         </ul>
         <ul class="nav pull-right" id="main-menu-right">
             <li>@Html.Partial("_AccountPartial")</li>
             <li>@Html.ActionLink("About", "Index", "About")</li>
         </ul>
+            <!--
+            <form class="navbar-search pull-left" action="/Search" method="post">
+            <input type="text" class="search-query" placeholder="Search">
+            </form>
+            -->
         </div>
         </div>
     </div>

@@ -8,8 +8,11 @@ namespace KB.Lib.Data
     {
 
         #region Entry
+
         Entry GetEntry(int id);
-        void SaveEntry(Entry em);
+
+        Entry AddEntry(Entry em);
+
         #endregion
 
 
