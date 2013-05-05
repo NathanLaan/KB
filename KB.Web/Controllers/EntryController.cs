@@ -22,6 +22,67 @@ namespace KB.Web.Controllers
         }
 
 
+        public ActionResult EntryResponsePartial(int parentID)
+        {
+            EntryResponseModel model = new EntryResponseModel();
+            model.Entry = new Entry();
+            model.Entry.ParentID = parentID;
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult EntryResponsePartial(EntryResponseModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    //
+                    // TODO: Get Parent Title
+                    //
+                    model.Entry.AccountID = GetFormsAuthenticationID();
+                    model.Entry.Title = model.Entry.Title;
+                    model.Entry.Timestamp = DateTime.Now;
+
+                    if (model.Entry.ParentID != null)
+                    {
+                        Entry parentEntry = this.dataRepository.GetEntry(model.Entry.ParentID.Value);
+
+                        if (parentEntry != null)
+                        {
+                            model.Entry.Title = "RE: " + parentEntry.Title;
+                            model.Entry = this.dataRepository.AddEntry(model.Entry);
+                            if (model.Entry != null && model.Entry.ID >= 0)
+                            {
+                                return RedirectToAction("Details", "Entry", new { id = model.Entry.ParentID });
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", "Unable to create entry");
+                            }
+                        }
+                        else
+                        {
+                            //
+                            // TODO: Parent model does not exist!
+                            //
+                        }
+                    }
+                    else
+                    {
+                        //
+                        // TODO: ParentID null!
+                        //
+                    }
+                }
+                catch
+                {
+                    return View();
+                }
+            }
+            return RedirectToAction("Details", "Entry", new { id = model.Entry.ParentID });
+        }
+
+
         public ActionResult Index()
         {
             return View();

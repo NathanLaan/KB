@@ -21,3 +21,10 @@
         @Model.Entry.Timestamp
     </div>
 </div>
+<div class="row">
+    <div class="span7">
+
+        @{Html.RenderAction("EntryResponsePartial", "Entry", new { parentID = @Model.Entry.ID });}
+
+    </div>
+</div>
