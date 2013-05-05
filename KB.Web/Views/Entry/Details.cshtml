@@ -1,8 +1,23 @@
-﻿@model KB.Lib.Entity.Entry
+﻿@model KB.Web.Models.EntryDetailsModel
 
 @{
     ViewBag.Title = "KB Entries";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>KB Entry: @Model.ID</h2>
+<div class="row">
+    <div class="span12">
+<h2>@Model.Entry.Title</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="span7">
+        @Model.Entry.Contents
+        <br />
+        <br />
+    </div>
+    <div class="span5">
+        Posted by: @Model.Entry.Author.Name<br />
+        @Model.Entry.Timestamp
+    </div>
+</div>

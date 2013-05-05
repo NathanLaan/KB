@@ -13,6 +13,9 @@ namespace KB.Lib.Data
 
         private static readonly string SQL_ENTRY_INSERT = "INSERT INTO [Entry] (ParentID,AccountID,Title,Contents,Timestamp) VALUES(@ParentID,@AccountID,@Title,@Contents,@Timestamp); SELECT last_insert_rowid();";
         private static readonly string SQL_ENTRY_SELECT_BY_ID = "SELECT ID,ParentID,AccountID,Title,Contents,Timestamp FROM [Entry] WHERE ID=@ID;";
+        private static readonly string SQL_ENTRY_SELECT_BY_ID_WITH_Account =
+            "SELECT Entry.ID,Entry.ParentID,Entry.AccountID,Entry.Title,Entry.Contents,Entry.Timestamp," +
+            "Account.Name,Account.Email,Account.Score FROM [Entry] LEFT OUTER JOIN [Account] ON Entry.AccountID=Account.ID WHERE Entry.ID=@ID;";
         
         public SQLiteDataRepository(string connectionString)
         {
@@ -47,7 +50,7 @@ namespace KB.Lib.Data
                 using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
                 {
                     sqliteConnection.Open();
-                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ENTRY_SELECT_BY_ID, sqliteConnection);
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ENTRY_SELECT_BY_ID_WITH_Account, sqliteConnection);
                     sqlCommand.Parameters.AddWithValue("@ID", id);
 
                     SQLiteDataReader reader = sqlCommand.ExecuteReader();
@@ -69,6 +72,12 @@ namespace KB.Lib.Data
                         entry.Title = reader.GetString(3);
                         entry.Contents = reader.GetString(4);
                         entry.Timestamp = reader.GetDateTime(5);
+
+                        entry.Author = new Account();
+                        entry.Author.ID = entry.AccountID;
+                        entry.Author.Name = reader.GetString(6);
+                        entry.Author.Email = reader.GetString(7);
+                        //entry.Author.Score = reader.GetString(6);
                     }
                 }
                 return entry;

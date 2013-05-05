@@ -32,9 +32,12 @@ namespace KB.Web.Controllers
 
         public ActionResult Details(int id)
         {
-            Entry entry = this.dataRepository.GetEntry(id);
-
-            return View(entry);
+            EntryDetailsModel model = new EntryDetailsModel();
+            model.Entry = this.dataRepository.GetEntry(id);
+            //
+            // TODO: model.ResponseList
+            //
+            return View(model);
         }
 
         private int GetFormsAuthenticationID()

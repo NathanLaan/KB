@@ -130,6 +130,7 @@
     <Compile Include="Models\AccountListModel.cs" />
     <Compile Include="Models\AccountLoginModel.cs" />
     <Compile Include="Models\AccountRegisterModel.cs" />
+    <Compile Include="Models\EntryDetailsModel.cs" />
     <Compile Include="Models\EntryModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
