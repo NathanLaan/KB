@@ -7,11 +7,19 @@ namespace KB.Lib.Entity
 {
     public class Entry : BaseEntity
     {
-        public int ParentID { get; set; } // IF null THEN Entry is top-level entry
+        public Nullable<int> ParentID { get; set; }
+        //public int ParentID { get; set; } // IF null THEN Entry is top-level entry
+
         public int AccountID { get; set; }
         public string Title { get; set; }
         public string Contents { get; set; }
         public DateTime Timestamp { get; set; }
         public List<string> TagList { get; set; }
+
+
+
+        // Populated field...
+        public Account Author { get; set; }
+
     }
 }

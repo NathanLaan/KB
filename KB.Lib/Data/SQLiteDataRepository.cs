@@ -11,16 +11,72 @@ namespace KB.Lib.Data
 
         private string connectionString;
 
-        private static readonly string SQL_ENTITY_INSERT = "INSERT INTO [Entity] (ParentID,AccountID,Title,Contents,Timestamp) VALUES(@ParentID,@AccountID,@Title,@Contents,@Timestamp); SELECT last_insert_rowid();";
+        private static readonly string SQL_ENTRY_INSERT = "INSERT INTO [Entry] (ParentID,AccountID,Title,Contents,Timestamp) VALUES(@ParentID,@AccountID,@Title,@Contents,@Timestamp); SELECT last_insert_rowid();";
+        private static readonly string SQL_ENTRY_SELECT_BY_ID = "SELECT ID,ParentID,AccountID,Title,Contents,Timestamp FROM [Entry] WHERE ID=@ID;";
         
         public SQLiteDataRepository(string connectionString)
         {
             this.connectionString = string.Format("Data Source={0}",connectionString);
         }
 
+
+        /// <summary>
+        /// All top-level entries (Entry with no parent).
+        /// </summary>
+        /// <returns></returns>
+        public List<Entry> GetTopLevelEntryList()
+        {
+            List<Entry> entryList = new List<Entry>();
+
+            return entryList;
+        }
+
+        public List<Entry> GetEntryListForParent(int parentID)
+        {
+            List<Entry> entryList = new List<Entry>();
+
+            return entryList;
+        }
+
+
         public Entry GetEntry(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Entry entry = new Entry();
+                using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
+                {
+                    sqliteConnection.Open();
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ENTRY_SELECT_BY_ID, sqliteConnection);
+                    sqlCommand.Parameters.AddWithValue("@ID", id);
+
+                    SQLiteDataReader reader = sqlCommand.ExecuteReader();
+                    //
+                    // Read the first record only
+                    //
+                    if (reader.Read())
+                    {
+                        entry.ID = reader.GetInt32(0);
+                        if (!reader.IsDBNull(1))
+                        {
+                            entry.ID = reader.GetInt32(1);
+                        }
+                        else
+                        {
+                            entry.ParentID = null;
+                        }
+                        entry.AccountID = reader.GetInt32(2);
+                        entry.Title = reader.GetString(3);
+                        entry.Contents = reader.GetString(4);
+                        entry.Timestamp = reader.GetDateTime(5);
+                    }
+                }
+                return entry;
+            }
+            catch (Exception exception)
+            {
+                return null;
+            }
         }
 
         public Entry AddEntry(Entry entry)
@@ -30,12 +86,12 @@ namespace KB.Lib.Data
                 using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
                 {
                     sqliteConnection.Open();
-                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ENTITY_INSERT, sqliteConnection);
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ENTRY_INSERT, sqliteConnection);
                     //ParentID,AccountID,Title,Content,Timestamp
                     sqlCommand.Parameters.AddWithValue("@ParentID", entry.ParentID);
                     sqlCommand.Parameters.AddWithValue("@AccountID", entry.AccountID);
                     sqlCommand.Parameters.AddWithValue("@Title", entry.Title);
-                    sqlCommand.Parameters.AddWithValue("@Content", entry.Contents);
+                    sqlCommand.Parameters.AddWithValue("@Contents", entry.Contents);
                     sqlCommand.Parameters.AddWithValue("@Timestamp", entry.Timestamp);
                     object returnValue = sqlCommand.ExecuteScalar();
 

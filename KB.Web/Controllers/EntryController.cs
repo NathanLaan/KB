@@ -1,15 +1,26 @@
 ﻿using System;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using KB.Web.Models;
+using KB.Lib.Data;
 using KB.Lib.Entity;
 
 namespace KB.Web.Controllers
 {
     public class EntryController : Controller
     {
-        //
-        // GET: /Entry/
+
+        private IDataRepository dataRepository;
+        public EntryController()
+        {
+            //
+            // TODO: Factory
+            //
+            string cs = System.Web.Configuration.WebConfigurationManager.ConnectionStrings["KB-SQLiteDB"].ConnectionString;
+            this.dataRepository = new SQLiteDataRepository(System.Web.HttpContext.Current.Server.MapPath(cs));
+        }
+
 
         public ActionResult Index()
         {
@@ -21,7 +32,16 @@ namespace KB.Web.Controllers
 
         public ActionResult Details(int id)
         {
-            return View();
+            Entry entry = this.dataRepository.GetEntry(id);
+
+            return View(entry);
+        }
+
+        private int GetFormsAuthenticationID()
+        {
+            FormsIdentity id = (FormsIdentity)User.Identity;
+            FormsAuthenticationTicket ticket = id.Ticket;
+            return int.Parse(ticket.UserData);
         }
 
         //
@@ -35,9 +55,23 @@ namespace KB.Web.Controllers
                 {
                     // TODO: Add insert logic here
                     Entry entry = new Entry();
-                    //entry.AccountID
+                    entry.ParentID = null;
+                    entry.AccountID = GetFormsAuthenticationID();
+                    entry.Title = model.Title;
+                    entry.Contents = model.Contents;
+                    entry.Timestamp = DateTime.Now;
+                    entry = this.dataRepository.AddEntry(entry);
 
-                    return RedirectToAction("Index");
+                    if (entry != null && entry.ID >= 0)
+                    {
+                        return RedirectToAction("Details", "Entry", new { id = entry.ID });
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Unable to create entry");
+                    }
+
+                    return RedirectToAction("Add", "Entry");
                 }
                 catch
                 {

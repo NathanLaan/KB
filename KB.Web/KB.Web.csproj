@@ -327,6 +327,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
     <Content Include="Views\Entry\Add.cshtml" />
+    <Content Include="Views\Entry\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_AccountPartial.cshtml" />

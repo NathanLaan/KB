@@ -19,8 +19,6 @@ namespace KB.Web.Controllers
     //
     public class AccountController : Controller
     {
-        //
-        // GET: /Account/
 
         private IDataRepository dataRepository;
 
@@ -135,7 +133,7 @@ namespace KB.Web.Controllers
         }
 
 
-        public int GetFormsAuthenticationID()
+        private int GetFormsAuthenticationID()
         {
             FormsIdentity id = (FormsIdentity)User.Identity;
             FormsAuthenticationTicket ticket = id.Ticket;

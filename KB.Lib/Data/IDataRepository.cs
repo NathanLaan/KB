@@ -13,6 +13,15 @@ namespace KB.Lib.Data
 
         Entry AddEntry(Entry em);
 
+
+        /// <summary>
+        /// All top-level entries (Entry with no parent).
+        /// </summary>
+        /// <returns></returns>
+        List<Entry> GetTopLevelEntryList();
+
+        List<Entry> GetEntryListForParent(int parentID);
+
         #endregion
 
 
