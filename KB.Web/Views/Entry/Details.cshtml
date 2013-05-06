@@ -22,14 +22,15 @@
     </div>
 </div>
 
-<hr />
-
 @foreach (var entity in @Model.ResponseList) {
     @Html.DisplayFor(m => entity)
 }
 
+@if(Request.IsAuthenticated) {
+<hr />
 <div class="row">
     <div class="span7">
         @{Html.RenderAction("EntryResponsePartial", "Entry", new { parentID = @Model.Entry.ID, parentTitle = @Model.Entry.Title });}
     </div>
 </div>
+}

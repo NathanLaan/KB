@@ -35,49 +35,52 @@ namespace KB.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                try
+                if (Request.IsAuthenticated)
                 {
-                    //
-                    // TODO: Get Parent Title
-                    //
-                    model.Entry.AccountID = GetFormsAuthenticationID();
-                    model.Entry.Timestamp = DateTime.Now;
-
-                    if (model.Entry.ParentID != null)
+                    try
                     {
-                        Entry parentEntry = this.dataRepository.GetEntry(model.Entry.ParentID.Value);
+                        //
+                        // TODO: Get Parent Title
+                        //
+                        model.Entry.AccountID = GetFormsAuthenticationID();
+                        model.Entry.Timestamp = DateTime.Now;
 
-                        //if (parentEntry != null)
+                        if (model.Entry.ParentID != null)
                         {
-                            //model.Entry.Title = "RE: " + parentEntry.Title;
-                            model.Entry.Title = "RE: " + model.Entry.Title;
-                            model.Entry = this.dataRepository.AddEntry(model.Entry);
-                            if (model.Entry != null && model.Entry.ID >= 0)
+                            Entry parentEntry = this.dataRepository.GetEntry(model.Entry.ParentID.Value);
+
+                            //if (parentEntry != null)
                             {
-                                return RedirectToAction("Details", "Entry", new { id = model.Entry.ParentID });
+                                //model.Entry.Title = "RE: " + parentEntry.Title;
+                                model.Entry.Title = "RE: " + model.Entry.Title;
+                                model.Entry = this.dataRepository.AddEntry(model.Entry);
+                                if (model.Entry != null && model.Entry.ID >= 0)
+                                {
+                                    return RedirectToAction("Details", "Entry", new { id = model.Entry.ParentID });
+                                }
+                                else
+                                {
+                                    ModelState.AddModelError("", "Unable to create entry");
+                                }
                             }
-                            else
+                            //else
                             {
-                                ModelState.AddModelError("", "Unable to create entry");
+                                //
+                                // TODO: Parent model does not exist!
+                                //
                             }
                         }
-                        //else
+                        else
                         {
                             //
-                            // TODO: Parent model does not exist!
+                            // TODO: ParentID null!
                             //
                         }
                     }
-                    else
+                    catch
                     {
-                        //
-                        // TODO: ParentID null!
-                        //
+                        return View();
                     }
-                }
-                catch
-                {
-                    return View();
                 }
             }
             return RedirectToAction("Details", "Entry", new { id = model.Entry.ParentID });
@@ -116,31 +119,34 @@ namespace KB.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                try
+                if (Request.IsAuthenticated)
                 {
-                    // TODO: Add insert logic here
-                    Entry entry = new Entry();
-                    entry.ParentID = null;
-                    entry.AccountID = GetFormsAuthenticationID();
-                    entry.Title = model.Title;
-                    entry.Contents = model.Contents;
-                    entry.Timestamp = DateTime.Now;
-                    entry = this.dataRepository.AddEntry(entry);
-
-                    if (entry != null && entry.ID >= 0)
+                    try
                     {
-                        return RedirectToAction("Details", "Entry", new { id = entry.ID });
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Unable to create entry");
-                    }
+                        // TODO: Add insert logic here
+                        Entry entry = new Entry();
+                        entry.ParentID = null;
+                        entry.AccountID = GetFormsAuthenticationID();
+                        entry.Title = model.Title;
+                        entry.Contents = model.Contents;
+                        entry.Timestamp = DateTime.Now;
+                        entry = this.dataRepository.AddEntry(entry);
 
-                    return RedirectToAction("Add", "Entry");
-                }
-                catch
-                {
-                    return View();
+                        if (entry != null && entry.ID >= 0)
+                        {
+                            return RedirectToAction("Details", "Entry", new { id = entry.ID });
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Unable to create entry");
+                        }
+
+                        return RedirectToAction("Add", "Entry");
+                    }
+                    catch
+                    {
+                        return View();
+                    }
                 }
             }
             return View();
