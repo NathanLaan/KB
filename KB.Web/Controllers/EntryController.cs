@@ -87,10 +87,20 @@ namespace KB.Web.Controllers
         }
 
 
-        public ActionResult Index()
+        public ActionResult Index(int id = 1)
         {
             EntryIndexModel model = new EntryIndexModel();
-            model.EntryList = this.dataRepository.GetTopLevelEntryList();
+            model.Page = id;
+            model.PageSize = 20;
+            model.EntryList = this.dataRepository.GetTopLevelEntryList(model.Page, model.PageSize);
+            return View(model);
+        }
+        public ActionResult Page(int id = 1)
+        {
+            EntryIndexModel model = new EntryIndexModel();
+            model.Page = id;
+            model.PageSize = 20;
+            model.EntryList = this.dataRepository.GetTopLevelEntryList(model.Page, model.PageSize);
             return View(model);
         }
 

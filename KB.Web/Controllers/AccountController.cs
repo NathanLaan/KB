@@ -36,6 +36,11 @@ namespace KB.Web.Controllers
             return View();
         }
 
+        public ActionResult Details(int id)
+        {
+            return View();
+        }
+
         [Authorize]
         public ActionResult Manage()
         {

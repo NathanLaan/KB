@@ -18,7 +18,7 @@ namespace KB.Lib.Data
         /// All top-level entries (Entry with no parent).
         /// </summary>
         /// <returns></returns>
-        List<Entry> GetTopLevelEntryList();
+        List<Entry> GetTopLevelEntryList(int page, int pageSize);
 
         List<Entry> GetEntryListForParent(int parentID);
 
