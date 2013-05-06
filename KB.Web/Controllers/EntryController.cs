@@ -22,11 +22,12 @@ namespace KB.Web.Controllers
         }
 
 
-        public ActionResult EntryResponsePartial(int parentID)
+        public ActionResult EntryResponsePartial(int parentID, string parentTitle)
         {
             EntryResponseModel model = new EntryResponseModel();
             model.Entry = new Entry();
             model.Entry.ParentID = parentID;
+            model.Entry.Title = parentTitle;
             return View(model);
         }
         [HttpPost]
@@ -40,16 +41,16 @@ namespace KB.Web.Controllers
                     // TODO: Get Parent Title
                     //
                     model.Entry.AccountID = GetFormsAuthenticationID();
-                    model.Entry.Title = model.Entry.Title;
                     model.Entry.Timestamp = DateTime.Now;
 
                     if (model.Entry.ParentID != null)
                     {
                         Entry parentEntry = this.dataRepository.GetEntry(model.Entry.ParentID.Value);
 
-                        if (parentEntry != null)
+                        //if (parentEntry != null)
                         {
-                            model.Entry.Title = "RE: " + parentEntry.Title;
+                            //model.Entry.Title = "RE: " + parentEntry.Title;
+                            model.Entry.Title = "RE: " + model.Entry.Title;
                             model.Entry = this.dataRepository.AddEntry(model.Entry);
                             if (model.Entry != null && model.Entry.ID >= 0)
                             {
@@ -60,7 +61,7 @@ namespace KB.Web.Controllers
                                 ModelState.AddModelError("", "Unable to create entry");
                             }
                         }
-                        else
+                        //else
                         {
                             //
                             // TODO: Parent model does not exist!

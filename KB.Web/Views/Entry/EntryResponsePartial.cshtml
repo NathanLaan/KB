@@ -6,6 +6,7 @@
     <fieldset>
         <legend>Reply</legend>
         @Html.HiddenFor(m => m.Entry.ParentID)
+        @Html.HiddenFor(m => m.Entry.Title)
         @Html.TextAreaFor(m => m.Entry.Contents, 4, 200, new { @class = "input-xxlarge" })
         @Html.ValidationMessageFor(m => m.Entry.Contents)
         <p>

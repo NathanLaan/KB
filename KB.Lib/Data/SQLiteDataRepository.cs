@@ -30,14 +30,18 @@ namespace KB.Lib.Data
         public List<Entry> GetTopLevelEntryList()
         {
             List<Entry> entryList = new List<Entry>();
-
+            //
+            // TODO
+            //
             return entryList;
         }
 
         public List<Entry> GetEntryListForParent(int parentID)
         {
             List<Entry> entryList = new List<Entry>();
-
+            //
+            // TODO
+            //
             return entryList;
         }
 
@@ -53,31 +57,33 @@ namespace KB.Lib.Data
                     SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ENTRY_SELECT_BY_ID_WITH_Account, sqliteConnection);
                     sqlCommand.Parameters.AddWithValue("@ID", id);
 
-                    SQLiteDataReader reader = sqlCommand.ExecuteReader();
-                    //
-                    // Read the first record only
-                    //
-                    if (reader.Read())
+                    using (SQLiteDataReader reader = sqlCommand.ExecuteReader())
                     {
-                        entry.ID = reader.GetInt32(0);
-                        if (!reader.IsDBNull(1))
+                        //
+                        // Read the first record only
+                        //
+                        if (reader.Read())
                         {
-                            entry.ID = reader.GetInt32(1);
-                        }
-                        else
-                        {
-                            entry.ParentID = null;
-                        }
-                        entry.AccountID = reader.GetInt32(2);
-                        entry.Title = reader.GetString(3);
-                        entry.Contents = reader.GetString(4);
-                        entry.Timestamp = reader.GetDateTime(5);
+                            entry.ID = reader.GetInt32(0);
+                            if (!reader.IsDBNull(1))
+                            {
+                                entry.ID = reader.GetInt32(1);
+                            }
+                            else
+                            {
+                                entry.ParentID = null;
+                            }
+                            entry.AccountID = reader.GetInt32(2);
+                            entry.Title = reader.GetString(3);
+                            entry.Contents = reader.GetString(4);
+                            entry.Timestamp = reader.GetDateTime(5);
 
-                        entry.Author = new Account();
-                        entry.Author.ID = entry.AccountID;
-                        entry.Author.Name = reader.GetString(6);
-                        entry.Author.Email = reader.GetString(7);
-                        //entry.Author.Score = reader.GetString(6);
+                            entry.Author = new Account();
+                            entry.Author.ID = entry.AccountID;
+                            entry.Author.Name = reader.GetString(6);
+                            entry.Author.Email = reader.GetString(7);
+                            //entry.Author.Score = reader.GetString(6);
+                        }
                     }
                 }
                 return entry;
@@ -138,19 +144,21 @@ namespace KB.Lib.Data
                     sqliteConnection.Open();
                     SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ACCOUNT_SELECT_ALL, sqliteConnection);
 
-                    SQLiteDataReader reader = sqlCommand.ExecuteReader();
-                    //
-                    // Read the first record only
-                    //
-                    while (reader.Read())
+                    using (SQLiteDataReader reader = sqlCommand.ExecuteReader())
                     {
-                        Account account = new Account();
-                        account.ID = reader.GetInt32(0);
-                        account.Name = reader.GetString(1);
-                        account.Email = reader.GetString(2);
-                        account.Password = reader.GetString(3);
-                        account.PasswordSalt = reader.GetString(4);
-                        accountList.Add(account);
+                        //
+                        // Read the first record only
+                        //
+                        while (reader.Read())
+                        {
+                            Account account = new Account();
+                            account.ID = reader.GetInt32(0);
+                            account.Name = reader.GetString(1);
+                            account.Email = reader.GetString(2);
+                            account.Password = reader.GetString(3);
+                            account.PasswordSalt = reader.GetString(4);
+                            accountList.Add(account);
+                        }
                     }
                 }
             }
@@ -172,17 +180,19 @@ namespace KB.Lib.Data
                     SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ACCOUNT_SELECT_BY_ID, sqliteConnection);
                     sqlCommand.Parameters.AddWithValue("@ID", id);
 
-                    SQLiteDataReader reader = sqlCommand.ExecuteReader();
-                    //
-                    // Read the first record only
-                    //
-                    if (reader.Read())
+                    using (SQLiteDataReader reader = sqlCommand.ExecuteReader())
                     {
-                        account.ID = reader.GetInt32(0);
-                        account.Name = reader.GetString(1);
-                        account.Email = reader.GetString(2);
-                        account.Password = reader.GetString(3);
-                        account.PasswordSalt = reader.GetString(4);
+                        //
+                        // Read the first record only
+                        //
+                        if (reader.Read())
+                        {
+                            account.ID = reader.GetInt32(0);
+                            account.Name = reader.GetString(1);
+                            account.Email = reader.GetString(2);
+                            account.Password = reader.GetString(3);
+                            account.PasswordSalt = reader.GetString(4);
+                        }
                     }
                 }
                 return account;
@@ -203,17 +213,19 @@ namespace KB.Lib.Data
                     SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ACCOUNT_SELECT_BY_NAME, sqliteConnection);
                     sqlCommand.Parameters.AddWithValue("@Name", accountName);
 
-                    SQLiteDataReader reader = sqlCommand.ExecuteReader();
-                    //
-                    // Read the first record only
-                    //
-                    if (reader.Read())
+                    using (SQLiteDataReader reader = sqlCommand.ExecuteReader())
                     {
-                        account.ID = reader.GetInt32(0);
-                        account.Name = reader.GetString(1);
-                        account.Email = reader.GetString(2);
-                        account.Password = reader.GetString(3);
-                        account.PasswordSalt = reader.GetString(4);
+                        //
+                        // Read the first record only
+                        //
+                        if (reader.Read())
+                        {
+                            account.ID = reader.GetInt32(0);
+                            account.Name = reader.GetString(1);
+                            account.Email = reader.GetString(2);
+                            account.Password = reader.GetString(3);
+                            account.PasswordSalt = reader.GetString(4);
+                        }
                     }
                 }
                 return account;
