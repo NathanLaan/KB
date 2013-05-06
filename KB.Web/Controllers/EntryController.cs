@@ -86,7 +86,9 @@ namespace KB.Web.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            EntryIndexModel model = new EntryIndexModel();
+            model.EntryList = this.dataRepository.GetTopLevelEntryList();
+            return View(model);
         }
 
         //
@@ -96,9 +98,6 @@ namespace KB.Web.Controllers
         {
             EntryDetailsModel model = new EntryDetailsModel();
             model.Entry = this.dataRepository.GetEntry(id);
-            //
-            // TODO: model.ResponseList
-            //
             model.ResponseList = this.dataRepository.GetEntryListForParent(id);
             return View(model);
         }

@@ -20,6 +20,10 @@ namespace KB.Lib.Data
             = "SELECT Entry.ID,Entry.ParentID,Entry.AccountID,Entry.Title,Entry.Contents,Entry.Timestamp,"
             + "Account.Name,Account.Email,Account.Score FROM [Entry] LEFT OUTER JOIN [Account] ON Entry.AccountID=Account.ID "
             + "WHERE Entry.ParentID=@ID ORDER BY Entry.Timestamp ASC;";
+        private static readonly string SQL_ENTRY_SELECT_NO_PARENT
+            = "SELECT Entry.ID,Entry.ParentID,Entry.AccountID,Entry.Title,Entry.Contents,Entry.Timestamp,"
+            + "Account.Name,Account.Email,Account.Score FROM [Entry] LEFT OUTER JOIN [Account] ON Entry.AccountID=Account.ID "
+            + "WHERE Entry.ParentID IS NULL ORDER BY Entry.Timestamp ASC;";
         
         public SQLiteDataRepository(string connectionString)
         {
@@ -34,9 +38,48 @@ namespace KB.Lib.Data
         public List<Entry> GetTopLevelEntryList()
         {
             List<Entry> entryList = new List<Entry>();
-            //
-            // TODO
-            //
+            try
+            {
+                using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
+                {
+                    sqliteConnection.Open();
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ENTRY_SELECT_NO_PARENT, sqliteConnection);
+                    
+
+                    using (SQLiteDataReader reader = sqlCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Entry entry = new Entry();
+                            entry.ID = reader.GetInt32(0);
+                            if (!reader.IsDBNull(1))
+                            {
+                                entry.ID = reader.GetInt32(1);
+                            }
+                            else
+                            {
+                                entry.ParentID = null;
+                            }
+                            entry.AccountID = reader.GetInt32(2);
+                            entry.Title = reader.GetString(3);
+                            entry.Contents = reader.GetString(4);
+                            entry.Timestamp = reader.GetDateTime(5);
+
+                            entry.Author = new Account();
+                            entry.Author.ID = entry.AccountID;
+                            entry.Author.Name = reader.GetString(6);
+                            entry.Author.Email = reader.GetString(7);
+                            //entry.Author.Score = reader.GetString(6);
+
+                            entryList.Add(entry);
+                        }
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                return null;
+            }
             return entryList;
         }
 

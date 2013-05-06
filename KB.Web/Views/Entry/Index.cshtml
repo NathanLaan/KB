@@ -1,4 +1,4 @@
-﻿@model KB.Lib.Entity.Entry
+﻿@model KB.Web.Models.EntryIndexModel
 
 @{
     ViewBag.Title = "KB Entries";
@@ -6,3 +6,16 @@
 }
 
 <h2>KB Entries</h2>
+
+@foreach (var entry in @Model.EntryList) {
+<hr />
+<div class="row">
+    <div class="span7">
+        <h2><a href="/entry/details/@entry.ID">@entry.Title</a></h2>
+    </div>
+    <div class="span5">
+        Posted by: @entry.Author.Name<br />
+        @entry.Timestamp
+    </div>
+</div>
+}

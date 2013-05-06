@@ -131,6 +131,7 @@
     <Compile Include="Models\AccountLoginModel.cs" />
     <Compile Include="Models\AccountRegisterModel.cs" />
     <Compile Include="Models\EntryDetailsModel.cs" />
+    <Compile Include="Models\EntryIndexModel.cs" />
     <Compile Include="Models\EntryModel.cs" />
     <Compile Include="Models\EntryResponseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
