@@ -23,7 +23,7 @@ namespace KB.Lib.Data
         private static readonly string SQL_ENTRY_SELECT_NO_PARENT
             = "SELECT Entry.ID,Entry.ParentID,Entry.AccountID,Entry.Title,Entry.Contents,Entry.Timestamp,"
             + "Account.Name,Account.Email,Account.Score FROM [Entry] LEFT OUTER JOIN [Account] ON Entry.AccountID=Account.ID "
-            + "WHERE Entry.ParentID IS NULL ORDER BY Entry.Timestamp ASC;";
+            + "WHERE Entry.ParentID IS NULL ORDER BY Entry.Timestamp DESC;";
         
         public SQLiteDataRepository(string connectionString)
         {

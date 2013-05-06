@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>KB Entries</h2>
+<h2>Latest Entries</h2>
 
 @foreach (var entry in @Model.EntryList) {
 <hr />
@@ -14,7 +14,7 @@
         <h2><a href="/entry/details/@entry.ID">@entry.Title</a></h2>
     </div>
     <div class="span5">
-        Posted by: @entry.Author.Name<br />
+        Posted by: <a href="/account/details/@entry.Author.ID">@entry.Author.Name</a><br />
         @entry.Timestamp
     </div>
 </div>

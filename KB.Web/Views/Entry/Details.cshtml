@@ -17,13 +17,12 @@
         <br />
     </div>
     <div class="span5">
-        Posted by: @Model.Entry.Author.Name<br />
+        Posted by: <a href="/account/details/@Model.Entry.Author.ID">@Model.Entry.Author.Name</a><br />
         @Model.Entry.Timestamp
     </div>
 </div>
 
 <hr />
-<br />
 
 @foreach (var entity in @Model.ResponseList) {
     @Html.DisplayFor(m => entity)
