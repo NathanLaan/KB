@@ -14,3 +14,5 @@ Knowledgebase Repository
 - [ ] Markdown formatting for Entry body.
 - [ ] Any user can edit entries?
 - [ ] User ranking?
+- [ ] Home page: number of users, number of entries, number of replies.
+- [ ] Change /ACCOUNT view to use paged data like /ENTRY view.
