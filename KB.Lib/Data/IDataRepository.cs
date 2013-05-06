@@ -54,5 +54,10 @@ namespace KB.Lib.Data
 
         #endregion
 
+
+        int GetTotalEntryCount(int accountID);
+        int GetTotalReplyCount(int accountID);
+        int GetTotalVotesCount(int accountID);
+
     }
 }

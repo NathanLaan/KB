@@ -16,7 +16,7 @@
         <br />
         <br />
     </div>
-    <div class="span4 href="/account/details/@Model.Entry.Author.ID">@Model.Entry.Author.Name</a><br />
+    <div class="span4" href="/account/details/@Model.Entry.Author.ID">@Model.Entry.Author.Name</a><br />
         @Model.Entry.Timestamp
     </div>
     <div class="span1">
@@ -24,9 +24,9 @@
     </div>
 </div>
 
-@foreach (var entity in @Model.ResponseList)
+@foreach (var entry in @Model.ResponseList)
 {
-    @Html.DisplayFor(m => entity)
+    @Html.DisplayFor(m => entry)
 }
 
 @if (Request.IsAuthenticated)

@@ -429,5 +429,77 @@ namespace KB.Lib.Data
 
         #endregion
 
+
+
+        private static readonly string SQL_ENTRY_COUNT_PARENT_FOR_ACCOUNT
+            = "SELECT COUNT(Entry.ID) FROM [Entry] WHERE Entry.ParentID IS NOT NULL AND AccountID=@AccountID;";
+        //
+        // Replies:
+        //
+        private static readonly string SQL_ENTRY_COUNT_NO_PARENT_FOR_ACCOUNT
+            = "SELECT COUNT(Entry.ID) FROM [Entry] WHERE Entry.ParentID IS NULL AND AccountID=@AccountID;";
+
+        private static readonly string SQL_EntryVote_COUNT
+            = "SELECT COUNT(ID) FROM [EntryVote] WHERE AccountID=@AccountID;";
+
+        public int GetTotalEntryCount(int accountID)
+        {
+            int count = 0;
+            try
+            {
+                using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
+                {
+                    sqliteConnection.Open();
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ENTRY_COUNT_NO_PARENT_FOR_ACCOUNT, sqliteConnection);
+                    sqlCommand.Parameters.AddWithValue("@AccountID", accountID);
+                    object returnValue = sqlCommand.ExecuteScalar();
+                    count = int.Parse(returnValue.ToString());
+                }
+            }
+            catch (Exception exception)
+            {
+            }
+            return count;
+        }
+        public int GetTotalReplyCount(int accountID)
+        {
+            int count = 0;
+            try
+            {
+                using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
+                {
+                    sqliteConnection.Open();
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ENTRY_COUNT_PARENT_FOR_ACCOUNT, sqliteConnection);
+                    sqlCommand.Parameters.AddWithValue("@AccountID", accountID);
+                    object returnValue = sqlCommand.ExecuteScalar();
+                    count = int.Parse(returnValue.ToString());
+                }
+            }
+            catch (Exception exception)
+            {
+            }
+            return count;
+        }
+        public int GetTotalVotesCount(int accountID)
+        {
+            int count = 0;
+            try
+            {
+                using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
+                {
+                    sqliteConnection.Open();
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_EntryVote_COUNT, sqliteConnection);
+                    sqlCommand.Parameters.AddWithValue("@AccountID", accountID);
+                    object returnValue = sqlCommand.ExecuteScalar();
+                    count = int.Parse(returnValue.ToString());
+                }
+            }
+            catch (Exception exception)
+            {
+            }
+            return count;
+        }
+
+
     }
 }

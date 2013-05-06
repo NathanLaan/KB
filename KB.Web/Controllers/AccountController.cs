@@ -40,6 +40,9 @@ namespace KB.Web.Controllers
         {
             AccountDetailsModel model = new AccountDetailsModel();
             model.Account = this.dataRepository.GetAccount(id);
+            model.TotalEntryCount = this.dataRepository.GetTotalEntryCount(id);
+            model.TotalReplyCount = this.dataRepository.GetTotalReplyCount(id);
+            model.TotalVotesCount = this.dataRepository.GetTotalVotesCount(id);
             return View(model);
         }
 
