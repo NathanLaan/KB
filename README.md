@@ -1,6 +1,8 @@
 KB
 ==
 
+Demo version: http://kbcenter.net
+
 Knowledgebase Repository
 
 - [ ] User Membership.
@@ -16,3 +18,5 @@ Knowledgebase Repository
 - [ ] User ranking?
 - [ ] Home page: number of users, number of entries, number of replies.
 - [ ] Change /ACCOUNT view to use paged data like /ENTRY view.
+- [ ] Automatic subscription to Entry updates when you create an entry or reply.
+- [ ] Config file to store root URL for email notifications.
