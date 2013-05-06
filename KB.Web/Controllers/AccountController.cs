@@ -38,7 +38,9 @@ namespace KB.Web.Controllers
 
         public ActionResult Details(int id)
         {
-            return View();
+            AccountDetailsModel model = new AccountDetailsModel();
+            model.Account = this.dataRepository.GetAccount(id);
+            return View(model);
         }
 
         [Authorize]
