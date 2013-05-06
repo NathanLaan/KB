@@ -11,5 +11,10 @@ namespace KB.Web.Models
 
         public List<Entry> ResponseList { get; set; }
 
+        public EntryDetailsModel()
+        {
+            this.ResponseList = new List<Entry>();
+        }
+
     }
 }

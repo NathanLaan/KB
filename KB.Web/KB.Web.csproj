@@ -331,6 +331,7 @@
     <Content Include="Views\Entry\Add.cshtml" />
     <Content Include="Views\Entry\Details.cshtml" />
     <Content Include="Views\Entry\EntryResponsePartial.cshtml" />
+    <Content Include="Views\Entry\DisplayTemplates\Entry.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_AccountPartial.cshtml" />

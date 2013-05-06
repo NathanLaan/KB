@@ -1,0 +1,15 @@
+﻿@model KB.Lib.Entity.Entry
+
+<div class="row">
+    <div class="span7">
+        @Model.Contents
+        <br />
+        <br />
+    </div>
+    <div class="span5">
+        Posted by: @Model.Author.Name<br />
+        @Model.Timestamp
+    </div>
+</div>
+<br />
+<hr />

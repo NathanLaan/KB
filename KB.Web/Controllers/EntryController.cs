@@ -99,6 +99,7 @@ namespace KB.Web.Controllers
             //
             // TODO: model.ResponseList
             //
+            model.ResponseList = this.dataRepository.GetEntryListForParent(id);
             return View(model);
         }
 
