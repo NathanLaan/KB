@@ -91,7 +91,7 @@ namespace KB.Web.Controllers
         {
             EntryIndexModel model = new EntryIndexModel();
             model.Page = id;
-            model.PageSize = 20;
+            model.PageSize = 10;
             model.EntryList = this.dataRepository.GetTopLevelEntryList(model.Page, model.PageSize);
             return View(model);
         }
@@ -99,7 +99,7 @@ namespace KB.Web.Controllers
         {
             EntryIndexModel model = new EntryIndexModel();
             model.Page = id;
-            model.PageSize = 20;
+            model.PageSize = 10;
             model.EntryList = this.dataRepository.GetTopLevelEntryList(model.Page, model.PageSize);
             return View(model);
         }

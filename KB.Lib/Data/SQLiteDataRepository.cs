@@ -23,7 +23,7 @@ namespace KB.Lib.Data
         private static readonly string SQL_ENTRY_SELECT_NO_PARENT
             = "SELECT Entry.ID,Entry.ParentID,Entry.AccountID,Entry.Title,Entry.Contents,Entry.Timestamp,"
             + "Account.Name,Account.Email,Account.Score FROM [Entry] LEFT OUTER JOIN [Account] ON Entry.AccountID=Account.ID "
-            + "WHERE Entry.ParentID IS NULL ORDER BY Entry.Timestamp DESC;";
+            + "WHERE Entry.ParentID IS NULL ORDER BY Entry.Timestamp DESC LIMIT @Limit OFFSET @Offset;";
         
         public SQLiteDataRepository(string connectionString)
         {
@@ -42,8 +42,16 @@ namespace KB.Lib.Data
             {
                 using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
                 {
+                    //
+                    // "SELECT ID FROM Entry ORDER BY Timestamp ASC LIMIT 2 OFFSET 1"
+                    //
+                    // LIMIT = pageSize
+                    // OFFSET = page * pageSize
+                    //
                     sqliteConnection.Open();
                     SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ENTRY_SELECT_NO_PARENT, sqliteConnection);
+                    sqlCommand.Parameters.AddWithValue("@Limit", pageSize);
+                    sqlCommand.Parameters.AddWithValue("@Offset", (page-1) * pageSize);
                     
 
                     using (SQLiteDataReader reader = sqlCommand.ExecuteReader())
