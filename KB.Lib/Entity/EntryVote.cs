@@ -9,6 +9,6 @@ namespace KB.Lib.Entity
     {
         public int EntryID { get; set; }
         public int AccountID { get; set; }
-        public int Score { get; set; }
+        public int Vote { get; set; }
     }
 }

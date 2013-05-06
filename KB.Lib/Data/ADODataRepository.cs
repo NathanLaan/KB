@@ -86,5 +86,20 @@ namespace KB.Lib.Data
 
         #endregion
 
+
+
+
+        public EntryVote Add(EntryVote entryVote)
+        {
+
+            return entryVote;
+        }
+        public EntryVote Get(int entryID, int accountID)
+        {
+            return null;
+        }
+
+
+
     }
 }

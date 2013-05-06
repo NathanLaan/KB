@@ -7,6 +7,18 @@ namespace KB.Lib.Data
     public interface IDataRepository
     {
 
+
+        /// <summary>
+        /// Return the value passed in, with the ID filled in. Do I really need this, or just following the pattern???
+        /// </summary>
+        /// <param name="entryVote"></param>
+        /// <returns></returns>
+        EntryVote Add(EntryVote entryVote);
+
+
+        EntryVote Get(int entryID, int accountID);
+
+
         #region Entry
 
         Entry GetEntry(int id);

@@ -7,9 +7,84 @@ namespace KB.Lib.Data
 {
     public class SQLiteDataRepository: IDataRepository
     {
+
+        #region Properties
+        private string connectionString;
+        #endregion
+
+        #region Constructor
+        public SQLiteDataRepository(string connectionString)
+        {
+            this.connectionString = string.Format("Data Source={0}",connectionString);
+        }
+        #endregion
+
+
+        private static readonly string SQL_EntryVote_SELECT
+            = "SELECT ID,EntryID,AccountID,Vote FROM [EntryVote]"
+            + "WHERE EntryID=@EntryID AND AccountID=@AccountID;";
+        private static readonly string SQL_EntryVote_INSERT
+            = "INSERT INTO [EntryVote] EntryID,AccountID,Vote VALUES(@EntryID,@AccountID,@Vote); SELECT last_insert_rowid();";
         
 
-        private string connectionString;
+        public EntryVote Add(EntryVote entryVote)
+        {
+            try
+            {
+                using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
+                {
+                    sqliteConnection.Open();
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ACCOUNT_INSERT, sqliteConnection);
+                    sqlCommand.Parameters.AddWithValue("@EntryID", entryVote.EntryID);
+                    sqlCommand.Parameters.AddWithValue("@AccountID", entryVote.AccountID);
+                    sqlCommand.Parameters.AddWithValue("@Vote", entryVote.Vote);
+                    object returnValue = sqlCommand.ExecuteScalar();
+
+                    int id = int.Parse(returnValue.ToString());
+                    entryVote.ID = id;
+                }
+                return entryVote;
+            }
+            catch (Exception exception)
+            {
+                return null;
+            }
+        }
+        public EntryVote Get(int entryID, int accountID)
+        {
+            try
+            {
+                EntryVote entryVote = new EntryVote();
+                using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
+                {
+                    sqliteConnection.Open();
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_EntryVote_SELECT, sqliteConnection);
+                    sqlCommand.Parameters.AddWithValue("@EntryID", entryID);
+                    sqlCommand.Parameters.AddWithValue("@AccountID", accountID);
+
+                    using (SQLiteDataReader reader = sqlCommand.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            entryVote.ID = reader.GetInt32(0);
+                            entryVote.EntryID = reader.GetInt32(1);
+                            entryVote.AccountID = reader.GetInt32(2);
+                            entryVote.Vote = reader.GetInt32(3);
+                        }
+                    }
+                }
+                return entryVote;
+            }
+            catch (Exception exception)
+            {
+                return null;
+            }
+        }
+
+
+
+        #region Entry
+
 
         private static readonly string SQL_ENTRY_INSERT = "INSERT INTO [Entry] (ParentID,AccountID,Title,Contents,Timestamp) VALUES(@ParentID,@AccountID,@Title,@Contents,@Timestamp); SELECT last_insert_rowid();";
         private static readonly string SQL_ENTRY_SELECT_BY_ID = "SELECT ID,ParentID,AccountID,Title,Contents,Timestamp FROM [Entry] WHERE ID=@ID;";
@@ -24,11 +99,6 @@ namespace KB.Lib.Data
             = "SELECT Entry.ID,Entry.ParentID,Entry.AccountID,Entry.Title,Entry.Contents,Entry.Timestamp,"
             + "Account.Name,Account.Email,Account.Score FROM [Entry] LEFT OUTER JOIN [Account] ON Entry.AccountID=Account.ID "
             + "WHERE Entry.ParentID IS NULL ORDER BY Entry.Timestamp DESC LIMIT @Limit OFFSET @Offset;";
-        
-        public SQLiteDataRepository(string connectionString)
-        {
-            this.connectionString = string.Format("Data Source={0}",connectionString);
-        }
 
 
         /// <summary>
@@ -216,6 +286,7 @@ namespace KB.Lib.Data
             }
         }
 
+        #endregion
 
 
         #region Account
