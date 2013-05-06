@@ -18,5 +18,21 @@ namespace KB.Web.Models
             this.EntryList = new List<Entry>();
         }
 
+        public int EntryMin
+        {
+            get
+            {
+                return (this.Page - 1) * this.PageSize + 1;
+            }
+        }
+
+        public int EntryMax
+        {
+            get
+            {
+                return (this.Page) * this.PageSize;
+            }
+        }
+
     }
 }

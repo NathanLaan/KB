@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Latest Entries</h2>
+<h2>Entries - Page @Model.Page (@Model.EntryMin to @Model.EntryMax)</h2>
 
 @foreach (var entry in @Model.EntryList) {
 <hr />
@@ -25,6 +25,9 @@
 @if(@Model.Page > 1){
 @Html.ActionLink("Prev Page", "Page", "Entry", new { id = @Model.Page - 1}, null)
 }
+</div>
+<div class="span2">
+Page @Model.Page - @Model.EntryMin to @Model.EntryMax
 </div>
 <div class="span2">
 @Html.ActionLink("Next Page", "Page", "Entry", new { id = @Model.Page + 1}, null)
