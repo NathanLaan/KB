@@ -4,21 +4,21 @@ using KB.Lib.Entity;
 
 namespace KB.Web.Models
 {
-    public class EntryIndexModel
+    public class AccountIndexModel
     {
 
         public int Page { get; set; }
 
         public int PageSize { get; set; }
 
-        public List<Entry> List { get; set; }
+        public List<Account> List { get; set; }
 
-        public EntryIndexModel()
+        public AccountIndexModel()
         {
-            this.List = new List<Entry>();
+            this.List = new List<Account>();
         }
 
-        public int EntryMin
+        public int Min
         {
             get
             {
@@ -26,7 +26,7 @@ namespace KB.Web.Models
             }
         }
 
-        public int EntryMax
+        public int Max
         {
             get
             {

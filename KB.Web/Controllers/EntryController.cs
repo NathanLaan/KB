@@ -53,7 +53,7 @@ namespace KB.Web.Controllers
                             {
                                 //model.Entry.Title = "RE: " + parentEntry.Title;
                                 model.Entry.Title = "RE: " + model.Entry.Title;
-                                model.Entry = this.dataRepository.AddEntry(model.Entry);
+                                model.Entry = this.dataRepository.Add(model.Entry);
                                 if (model.Entry != null && model.Entry.ID >= 0)
                                 {
                                     return RedirectToAction("Details", "Entry", new { id = model.Entry.ParentID });
@@ -92,7 +92,7 @@ namespace KB.Web.Controllers
             EntryIndexModel model = new EntryIndexModel();
             model.Page = id;
             model.PageSize = 10;
-            model.EntryList = this.dataRepository.GetTopLevelEntryList(model.Page, model.PageSize);
+            model.List = this.dataRepository.GetTopLevelEntryList(model.Page, model.PageSize);
             return View(model);
         }
         public ActionResult Page(int id = 1)
@@ -100,7 +100,7 @@ namespace KB.Web.Controllers
             EntryIndexModel model = new EntryIndexModel();
             model.Page = id;
             model.PageSize = 10;
-            model.EntryList = this.dataRepository.GetTopLevelEntryList(model.Page, model.PageSize);
+            model.List = this.dataRepository.GetTopLevelEntryList(model.Page, model.PageSize);
             return View(model);
         }
 
@@ -140,7 +140,7 @@ namespace KB.Web.Controllers
                         entry.Title = model.Title;
                         entry.Contents = model.Contents;
                         entry.Timestamp = DateTime.Now;
-                        entry = this.dataRepository.AddEntry(entry);
+                        entry = this.dataRepository.Add(entry);
 
                         if (entry != null && entry.ID >= 0)
                         {

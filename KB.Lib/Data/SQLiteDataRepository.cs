@@ -49,7 +49,7 @@ namespace KB.Lib.Data
                 return null;
             }
         }
-        public EntryVote Get(int entryID, int accountID)
+        public EntryVote GetEntryVote(int entryID, int accountID)
         {
             try
             {
@@ -194,7 +194,7 @@ namespace KB.Lib.Data
             }
         }
 
-        public Entry AddEntry(Entry entry)
+        public Entry Add(Entry entry)
         {
             try
             {
@@ -227,11 +227,40 @@ namespace KB.Lib.Data
         #region Account
 
 
-        private static readonly string SQL_ACCOUNT_INSERT = "INSERT INTO [Account] (Name,Email,Password,PasswordSalt) VALUES(@Name,@Email,@Password,@PasswordSalt); SELECT last_insert_rowid();";
-        private static readonly string SQL_ACCOUNT_SELECT_BY_ID = "SELECT ID,Name,Email,Password,PasswordSalt FROM [Account] WHERE ID=@ID;";
-        private static readonly string SQL_ACCOUNT_SELECT_BY_NAME = "SELECT ID,Name,Email,Password,PasswordSalt FROM [Account] WHERE Name=@Name;";
-        private static readonly string SQL_ACCOUNT_SELECT_ALL = "SELECT ID,Name,Email,Password,PasswordSalt FROM [Account] ORDER BY ID ASC;";
+        private static readonly string SQL_ACCOUNT_INSERT = "INSERT INTO [Account] (Name,Email,Password,PasswordSalt,Timestamp) VALUES(@Name,@Email,@Password,@PasswordSalt,@Timestamp); SELECT last_insert_rowid();";
+        private static readonly string SQL_ACCOUNT_SELECT_BY_ID = "SELECT ID,Name,Email,Password,PasswordSalt,Score,Timestamp FROM [Account] WHERE ID=@ID;";
+        private static readonly string SQL_ACCOUNT_SELECT_BY_NAME = "SELECT ID,Name,Email,Password,PasswordSalt,Score,Timestamp FROM [Account] WHERE Name=@Name;";
+        private static readonly string SQL_ACCOUNT_SELECT_ALL = "SELECT ID,Name,Email,Password,PasswordSalt,Score,Timestamp FROM [Account] ORDER BY ID ASC;";
 
+        private static readonly string SQL_Account_SELECT_PAGING
+            = "SELECT ID,Name,Email,Password,PasswordSalt,Score,Timestamp FROM [Account] ORDER BY Account.ID DESC LIMIT @Limit OFFSET @Offset;";
+
+        public List<Account> GetAccountListPaged(int page, int pageSize)
+        {
+            List<Account> accountList = new List<Account>();
+            try
+            {
+                using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
+                {
+                    sqliteConnection.Open();
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_Account_SELECT_PAGING, sqliteConnection);
+                    sqlCommand.Parameters.AddWithValue("@Limit", pageSize);
+                    sqlCommand.Parameters.AddWithValue("@Offset", (page - 1) * pageSize);
+                    using (SQLiteDataReader reader = sqlCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            accountList.Add(ReadAccount(reader));
+                        }
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                return null;
+            }
+            return accountList;
+        }
 
         public List<Account> GetAccountList()
         {
@@ -251,13 +280,7 @@ namespace KB.Lib.Data
                         //
                         while (reader.Read())
                         {
-                            Account account = new Account();
-                            account.ID = reader.GetInt32(0);
-                            account.Name = reader.GetString(1);
-                            account.Email = reader.GetString(2);
-                            account.Password = reader.GetString(3);
-                            account.PasswordSalt = reader.GetString(4);
-                            accountList.Add(account);
+                            accountList.Add(ReadAccount(reader));
                         }
                     }
                 }
@@ -287,11 +310,7 @@ namespace KB.Lib.Data
                         //
                         if (reader.Read())
                         {
-                            account.ID = reader.GetInt32(0);
-                            account.Name = reader.GetString(1);
-                            account.Email = reader.GetString(2);
-                            account.Password = reader.GetString(3);
-                            account.PasswordSalt = reader.GetString(4);
+                            account = ReadAccount(reader);
                         }
                     }
                 }
@@ -320,11 +339,7 @@ namespace KB.Lib.Data
                         //
                         if (reader.Read())
                         {
-                            account.ID = reader.GetInt32(0);
-                            account.Name = reader.GetString(1);
-                            account.Email = reader.GetString(2);
-                            account.Password = reader.GetString(3);
-                            account.PasswordSalt = reader.GetString(4);
+                            account = ReadAccount(reader);
                         }
                     }
                 }
@@ -336,7 +351,7 @@ namespace KB.Lib.Data
             }
         }
 
-        public Account AddAccount(Account account)
+        public Account Add(Account account)
         {
             try
             {
@@ -348,6 +363,7 @@ namespace KB.Lib.Data
                     sqlCommand.Parameters.AddWithValue("@Email", account.Email);
                     sqlCommand.Parameters.AddWithValue("@Password", account.Password);
                     sqlCommand.Parameters.AddWithValue("@PasswordSalt", account.PasswordSalt);
+                    sqlCommand.Parameters.AddWithValue("@Timestamp", account.Timestamp);
                     object returnValue = sqlCommand.ExecuteScalar();
 
                     int id = int.Parse(returnValue.ToString());
@@ -443,6 +459,18 @@ namespace KB.Lib.Data
 
 
         #region UTILITY
+
+        private Account ReadAccount(SQLiteDataReader reader)
+        {
+            Account account = new Account();
+            account.ID = reader.GetInt32(0);
+            account.Name = reader.GetString(1);
+            account.Email = reader.GetString(2);
+            account.Password = reader.GetString(3);
+            account.PasswordSalt = reader.GetString(4);
+            return account;
+        }
+
         private Entry ReadEntryAuthor(SQLiteDataReader reader)
         {
             Entry entry = new Entry();
@@ -467,6 +495,7 @@ namespace KB.Lib.Data
             //entry.Author.Score = reader.GetString(6);
             return entry;
         }
+
         #endregion
 
 

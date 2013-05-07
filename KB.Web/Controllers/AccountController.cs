@@ -31,9 +31,21 @@ namespace KB.Web.Controllers
             this.dataRepository = new SQLiteDataRepository(System.Web.HttpContext.Current.Server.MapPath(cs));
         }
 
-        public ActionResult Index()
+        public ActionResult Index(int id = 1)
         {
-            return View();
+            AccountIndexModel model = new AccountIndexModel();
+            model.Page = id;
+            model.PageSize = 10;
+            model.List = this.dataRepository.GetAccountListPaged(model.Page, model.PageSize);
+            return View(model);
+        }
+        public ActionResult Page(int id = 1)
+        {
+            AccountIndexModel model = new AccountIndexModel();
+            model.Page = id;
+            model.PageSize = 10;
+            model.List = this.dataRepository.GetAccountListPaged(model.Page, model.PageSize);
+            return View(model);
         }
 
         public ActionResult Details(int id)
@@ -162,7 +174,8 @@ namespace KB.Web.Controllers
                     SecurityUtil.EncryptedPassword encryptedPassword = SecurityUtil.GenerateEncryptedPassword(account.Password);
                     account.Password = encryptedPassword.Password;
                     account.PasswordSalt = encryptedPassword.PasswordSalt;
-                    account = this.dataRepository.AddAccount(account);
+                    account.Timestamp = DateTime.Now;
+                    account = this.dataRepository.Add(account);
 
                     if (account != null && account.ID >= 0)
                     {

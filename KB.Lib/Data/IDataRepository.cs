@@ -16,14 +16,14 @@ namespace KB.Lib.Data
         EntryVote Add(EntryVote entryVote);
 
 
-        EntryVote Get(int entryID, int accountID);
+        EntryVote GetEntryVote(int entryID, int accountID);
 
 
         #region Entry
 
-        Entry GetEntry(int id);
+        Entry Add(Entry entry);
 
-        Entry AddEntry(Entry em);
+        Entry GetEntry(int id);
 
 
         /// <summary>
@@ -44,13 +44,15 @@ namespace KB.Lib.Data
         /// </summary>
         /// <param name="account">The account with populated ID field.</param>
         /// <returns></returns>
-        Account AddAccount(Account account);
+        Account Add(Account account);
 
         Account GetAccount(int id);
 
         Account GetAccount(string accountName);
 
         List<Account> GetAccountList();
+
+        List<Account> GetAccountListPaged(int page, int pageSize);
 
         #endregion
 
