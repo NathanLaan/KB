@@ -39,7 +39,6 @@ namespace KB.Lib.Data
                     sqlCommand.Parameters.AddWithValue("@AccountID", entryVote.AccountID);
                     sqlCommand.Parameters.AddWithValue("@Vote", entryVote.Vote);
                     object returnValue = sqlCommand.ExecuteScalar();
-
                     int id = int.Parse(returnValue.ToString());
                     entryVote.ID = id;
                 }
@@ -122,34 +121,11 @@ namespace KB.Lib.Data
                     SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ENTRY_SELECT_NO_PARENT, sqliteConnection);
                     sqlCommand.Parameters.AddWithValue("@Limit", pageSize);
                     sqlCommand.Parameters.AddWithValue("@Offset", (page-1) * pageSize);
-                    
-
                     using (SQLiteDataReader reader = sqlCommand.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            Entry entry = new Entry();
-                            entry.ID = reader.GetInt32(0);
-                            if (!reader.IsDBNull(1))
-                            {
-                                entry.ID = reader.GetInt32(1);
-                            }
-                            else
-                            {
-                                entry.ParentID = null;
-                            }
-                            entry.AccountID = reader.GetInt32(2);
-                            entry.Title = reader.GetString(3);
-                            entry.Contents = reader.GetString(4);
-                            entry.Timestamp = reader.GetDateTime(5);
-
-                            entry.Author = new Account();
-                            entry.Author.ID = entry.AccountID;
-                            entry.Author.Name = reader.GetString(6);
-                            entry.Author.Email = reader.GetString(7);
-                            //entry.Author.Score = reader.GetString(6);
-
-                            entryList.Add(entry);
+                            entryList.Add(ReadEntryAuthor(reader));
                         }
                     }
                 }
@@ -171,33 +147,11 @@ namespace KB.Lib.Data
                     sqliteConnection.Open();
                     SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ENTRY_SELECT_BY_ParentID_WITH_Account, sqliteConnection);
                     sqlCommand.Parameters.AddWithValue("@ID", parentID);
-
                     using (SQLiteDataReader reader = sqlCommand.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            Entry entry = new Entry();
-                            entry.ID = reader.GetInt32(0);
-                            if (!reader.IsDBNull(1))
-                            {
-                                entry.ID = reader.GetInt32(1);
-                            }
-                            else
-                            {
-                                entry.ParentID = null;
-                            }
-                            entry.AccountID = reader.GetInt32(2);
-                            entry.Title = reader.GetString(3);
-                            entry.Contents = reader.GetString(4);
-                            entry.Timestamp = reader.GetDateTime(5);
-
-                            entry.Author = new Account();
-                            entry.Author.ID = entry.AccountID;
-                            entry.Author.Name = reader.GetString(6);
-                            entry.Author.Email = reader.GetString(7);
-                            //entry.Author.Score = reader.GetString(6);
-
-                            entryList.Add(entry);
+                            entryList.Add(ReadEntryAuthor(reader));
                         }
                     }
                 }
@@ -228,25 +182,7 @@ namespace KB.Lib.Data
                         //
                         if (reader.Read())
                         {
-                            entry.ID = reader.GetInt32(0);
-                            if (!reader.IsDBNull(1))
-                            {
-                                entry.ID = reader.GetInt32(1);
-                            }
-                            else
-                            {
-                                entry.ParentID = null;
-                            }
-                            entry.AccountID = reader.GetInt32(2);
-                            entry.Title = reader.GetString(3);
-                            entry.Contents = reader.GetString(4);
-                            entry.Timestamp = reader.GetDateTime(5);
-
-                            entry.Author = new Account();
-                            entry.Author.ID = entry.AccountID;
-                            entry.Author.Name = reader.GetString(6);
-                            entry.Author.Email = reader.GetString(7);
-                            //entry.Author.Score = reader.GetString(6);
+                            entry = ReadEntryAuthor(reader);
                         }
                     }
                 }
@@ -273,7 +209,6 @@ namespace KB.Lib.Data
                     sqlCommand.Parameters.AddWithValue("@Contents", entry.Contents);
                     sqlCommand.Parameters.AddWithValue("@Timestamp", entry.Timestamp);
                     object returnValue = sqlCommand.ExecuteScalar();
-
                     int id = int.Parse(returnValue.ToString());
                     entry.ID = id;
                 }
@@ -431,6 +366,8 @@ namespace KB.Lib.Data
 
 
 
+        #region GetCount(accountID)
+
         private static readonly string SQL_ENTRY_COUNT_PARENT_FOR_ACCOUNT
             = "SELECT COUNT(Entry.ID) FROM [Entry] WHERE Entry.ParentID IS NOT NULL AND AccountID=@AccountID;";
         //
@@ -439,8 +376,9 @@ namespace KB.Lib.Data
         private static readonly string SQL_ENTRY_COUNT_NO_PARENT_FOR_ACCOUNT
             = "SELECT COUNT(Entry.ID) FROM [Entry] WHERE Entry.ParentID IS NULL AND AccountID=@AccountID;";
 
-        private static readonly string SQL_EntryVote_COUNT
+        private static readonly string SQL_EntryVote_COUNT_FOR_ACCOUNT
             = "SELECT COUNT(ID) FROM [EntryVote] WHERE AccountID=@AccountID;";
+
 
         public int GetTotalEntryCount(int accountID)
         {
@@ -488,7 +426,7 @@ namespace KB.Lib.Data
                 using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
                 {
                     sqliteConnection.Open();
-                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_EntryVote_COUNT, sqliteConnection);
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_EntryVote_COUNT_FOR_ACCOUNT, sqliteConnection);
                     sqlCommand.Parameters.AddWithValue("@AccountID", accountID);
                     object returnValue = sqlCommand.ExecuteScalar();
                     count = int.Parse(returnValue.ToString());
@@ -500,6 +438,182 @@ namespace KB.Lib.Data
             return count;
         }
 
+        #endregion
+
+
+
+        #region UTILITY
+        private Entry ReadEntryAuthor(SQLiteDataReader reader)
+        {
+            Entry entry = new Entry();
+            entry.ID = reader.GetInt32(0);
+            if (!reader.IsDBNull(1))
+            {
+                entry.ID = reader.GetInt32(1);
+            }
+            else
+            {
+                entry.ParentID = null;
+            }
+            entry.AccountID = reader.GetInt32(2);
+            entry.Title = reader.GetString(3);
+            entry.Contents = reader.GetString(4);
+            entry.Timestamp = reader.GetDateTime(5);
+
+            entry.Author = new Account();
+            entry.Author.ID = entry.AccountID;
+            entry.Author.Name = reader.GetString(6);
+            entry.Author.Email = reader.GetString(7);
+            //entry.Author.Score = reader.GetString(6);
+            return entry;
+        }
+        #endregion
+
+
+
+        #region Dasthboard
+
+
+        private static readonly string SQL_ENTRY_SELECT_LATEST_NO_PARENT
+            = "SELECT Entry.ID,Entry.ParentID,Entry.AccountID,Entry.Title,Entry.Contents,Entry.Timestamp,"
+            + "Account.Name,Account.Email,Account.Score FROM [Entry] LEFT OUTER JOIN [Account] ON Entry.AccountID=Account.ID "
+            + "WHERE Entry.ParentID IS NULL ORDER BY Entry.Timestamp DESC LIMIT @Limit;";
+
+        public List<Entry> GetLatestEntryList()
+        {
+            List<Entry> entryList = new List<Entry>();
+            try
+            {
+                using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
+                {
+                    //
+                    // "SELECT ID FROM Entry ORDER BY Timestamp ASC LIMIT 2 OFFSET 1"
+                    //
+                    // LIMIT = pageSize
+                    // OFFSET = page * pageSize
+                    //
+                    sqliteConnection.Open();
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ENTRY_SELECT_LATEST_NO_PARENT, sqliteConnection);
+                    sqlCommand.Parameters.AddWithValue("@Limit", 2);
+                    using (SQLiteDataReader reader = sqlCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            entryList.Add(ReadEntryAuthor(reader));
+                        }
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                return null;
+            }
+            return entryList;
+        }
+        public List<Entry> GetPopularEntryList()
+        {
+            List<Entry> entryList = new List<Entry>();
+            return entryList;
+        }
+        public List<Account> GetActiveAccountList()
+        {
+            List<Account> accountList = new List<Account>();
+            return accountList;
+        }
+        #endregion
+
+
+        #region GetCount()
+
+        private static readonly string SQL_ENTRY_COUNT_PARENT
+            = "SELECT COUNT(Entry.ID) FROM [Entry] WHERE Entry.ParentID IS NOT NULL;";
+        //
+        // Replies:
+        //
+        private static readonly string SQL_ENTRY_COUNT_NO_PARENT
+            = "SELECT COUNT(Entry.ID) FROM [Entry] WHERE Entry.ParentID IS NULL;";
+
+        private static readonly string SQL_EntryVote_COUNT
+            = "SELECT COUNT(ID) FROM [EntryVote];";
+
+        private static readonly string SQL_Account_COUNT
+            = "SELECT COUNT(ID) FROM [Account];";
+
+
+        public int GetTotalUsersCount()
+        {
+            int count = 0;
+            try
+            {
+                using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
+                {
+                    sqliteConnection.Open();
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_Account_COUNT, sqliteConnection);
+                    object returnValue = sqlCommand.ExecuteScalar();
+                    count = int.Parse(returnValue.ToString());
+                }
+            }
+            catch (Exception exception)
+            {
+            }
+            return count;
+        }
+        public int GetTotalEntryCount()
+        {
+            int count = 0;
+            try
+            {
+                using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
+                {
+                    sqliteConnection.Open();
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ENTRY_COUNT_NO_PARENT, sqliteConnection);
+                    object returnValue = sqlCommand.ExecuteScalar();
+                    count = int.Parse(returnValue.ToString());
+                }
+            }
+            catch (Exception exception)
+            {
+            }
+            return count;
+        }
+        public int GetTotalReplyCount()
+        {
+            int count = 0;
+            try
+            {
+                using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
+                {
+                    sqliteConnection.Open();
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ENTRY_COUNT_PARENT, sqliteConnection);
+                    object returnValue = sqlCommand.ExecuteScalar();
+                    count = int.Parse(returnValue.ToString());
+                }
+            }
+            catch (Exception exception)
+            {
+            }
+            return count;
+        }
+        public int GetTotalVotesCount()
+        {
+            int count = 0;
+            try
+            {
+                using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
+                {
+                    sqliteConnection.Open();
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_EntryVote_COUNT, sqliteConnection);
+                    object returnValue = sqlCommand.ExecuteScalar();
+                    count = int.Parse(returnValue.ToString());
+                }
+            }
+            catch (Exception exception)
+            {
+            }
+            return count;
+        }
+
+        #endregion
 
     }
 }

@@ -131,6 +131,7 @@
     <Compile Include="Models\AccountListModel.cs" />
     <Compile Include="Models\AccountLoginModel.cs" />
     <Compile Include="Models\AccountRegisterModel.cs" />
+    <Compile Include="Models\DashboardModel.cs" />
     <Compile Include="Models\EntryDetailsModel.cs" />
     <Compile Include="Models\EntryIndexModel.cs" />
     <Compile Include="Models\EntryModel.cs" />
@@ -336,6 +337,8 @@
     <Content Include="Views\Entry\DisplayTemplates\Entry.cshtml" />
     <Content Include="Views\Account\Details.cshtml" />
     <Content Include="Views\Entry\Page.cshtml" />
+    <Content Include="Views\Default\DisplayTemplates\Entry.cshtml" />
+    <Content Include="Views\Default\DisplayTemplates\Account.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_AccountPartial.cshtml" />

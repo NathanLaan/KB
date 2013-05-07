@@ -55,6 +55,18 @@ namespace KB.Lib.Data
         #endregion
 
 
+        //
+        // Dashboard
+        //
+
+        List<Entry> GetLatestEntryList();
+        List<Entry> GetPopularEntryList();
+        List<Account> GetActiveAccountList();
+
+        int GetTotalUsersCount();
+        int GetTotalEntryCount();
+        int GetTotalReplyCount();
+        int GetTotalVotesCount();
         int GetTotalEntryCount(int accountID);
         int GetTotalReplyCount(int accountID);
         int GetTotalVotesCount(int accountID);
