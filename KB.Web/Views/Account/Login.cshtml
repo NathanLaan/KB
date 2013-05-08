@@ -1,39 +1,50 @@
 ﻿@model KB.Web.Models.AccountLoginModel
 
 @{
-    ViewBag.Title = "Account";
+    ViewBag.Title = "KB Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Login</h2>
-@using (Html.BeginForm()) {
-    <div>
-        <fieldset>
+@using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "form-inline" }))
+{
 
-            <div class="editor-label">
-                @Html.LabelFor(m => m.Username)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(m => m.Username)
-                @Html.ValidationMessageFor(m => m.Username)
-            </div>
-
-            <div class="editor-label">
-                @Html.LabelFor(m => m.Password)
-            </div>
-            <div class="editor-field">
-                @Html.PasswordFor(m => m.Password)
-                @Html.ValidationMessageFor(m => m.Password)
-            </div>
-
-            <div class="editor-label">
-                @Html.CheckBoxFor(m => m.RememberMe)
-                @Html.LabelFor(m => m.RememberMe)
-            </div>
-
-            <p>
-                <input type="submit" value="Log On" />
-            </p>
-        </fieldset>
+<div class="row">
+    <div class="span12">
+    <h2>Login</h2>
     </div>
+</div>
+    
+<div class="row">
+    <div class="span8">
+        @Html.TextBoxFor(m => m.Username)
+        @Html.ValidationMessageFor(m => m.Username)
+    </div>
+</div>
+<div class="row">
+    <div class="span8">
+        @Html.TextBoxFor(m => m.Password, new { title = "Password" })
+        @Html.ValidationMessageFor(m => m.Password)
+    </div>
+</div>
+<div class="row">
+    <div class="span8">
+        @Html.CheckBoxFor(m => m.RememberMe)
+        @Html.LabelFor(m => m.RememberMe)
+    </div>
+</div>
+<div class="row">
+    <div class="span8">
+    <input type="submit" value="Log On" />
+    </div>
+</div>
+<br />
+<br />
+<br />
+<div class="row">
+    </div>
+<div class="row">
+    <div class="span12">
+        @Html.ActionLink("Forgot your username or password?", "PasswordReset", "Account")
+    </div>
+</div>
 }

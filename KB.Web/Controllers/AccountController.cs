@@ -202,8 +202,21 @@ namespace KB.Web.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
+
         public ActionResult PasswordReset()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult PasswordReset(AccoutPasswordResetModel model)
+        {
+            //
+            // TODO: Create new password, and email username and password to the user.
+            // TODO: display confirmation message to the user
+            //
+
             return View();
         }
 
