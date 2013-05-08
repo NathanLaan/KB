@@ -1,10 +1,9 @@
-KB
-==
+KB Knowledgebase Repository
+===========================
 
 Demo version: http://kbcenter.net
 
-Knowledgebase Repository
-
+- [ ] User account registration needs to check if email already exists.
 - [ ] User Membership.
 - [ ] User registration.
 - [ ] Password reset via email.

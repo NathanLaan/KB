@@ -71,10 +71,12 @@ namespace KB.Web.Controllers
             return RedirectToAction("Index", "Default");
         }
 
+        //
+        // Not used
+        //
         public ActionResult AccoutList(string sidx, string sord, int page, int rows)
         {
             List<Account> accountList = this.dataRepository.GetAccountList();
-
             var jsonData = new
             {
                 total = 1,
@@ -83,7 +85,6 @@ namespace KB.Web.Controllers
                 rows = accountList
             };
             return Json(jsonData, JsonRequestBehavior.AllowGet);
-
         }
 
 
@@ -202,10 +203,6 @@ namespace KB.Web.Controllers
             return View(model);
         }
         public ActionResult PasswordReset()
-        {
-            return View();
-        }
-        public ActionResult List()
         {
             return View();
         }
