@@ -15,7 +15,12 @@ namespace KB.Lib.Data
         /// <returns></returns>
         EntryVote Add(EntryVote entryVote);
 
-
+        /// <summary>
+        /// Used to check if a user has already voted on an Entry.
+        /// </summary>
+        /// <param name="entryID"></param>
+        /// <param name="accountID"></param>
+        /// <returns></returns>
         EntryVote GetEntryVote(int entryID, int accountID);
 
 

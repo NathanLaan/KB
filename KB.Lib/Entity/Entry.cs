@@ -21,5 +21,9 @@ namespace KB.Lib.Entity
         // Populated field...
         public Account Author { get; set; }
 
+        public bool AuthorVote { get; set; }
+        public bool AuthorVoteUp { get; set; }
+        public bool AuthorVoteDown { get; set; }
+
     }
 }

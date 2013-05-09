@@ -5,7 +5,7 @@ using System.Net.Mail;
 
 namespace KB.Lib.Utility
 {
-    public sealed class MailUtility
+    public sealed class MailUtil
     {
 
         public static void SendMail(string from, string to, string subject, string message, string smtpServer = "localhost")
