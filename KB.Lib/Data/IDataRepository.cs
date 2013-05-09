@@ -50,6 +50,8 @@ namespace KB.Lib.Data
 
         Account GetAccount(string accountName);
 
+        Account GetAccountForEmail(string email);
+
         List<Account> GetAccountList();
 
         List<Account> GetAccountListPaged(int page, int pageSize);

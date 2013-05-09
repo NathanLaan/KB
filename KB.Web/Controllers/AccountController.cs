@@ -204,6 +204,11 @@ namespace KB.Web.Controllers
         }
 
 
+        public ActionResult PasswordResetConfirm(string email)
+        {
+            return View();
+        }
+
         public ActionResult PasswordReset()
         {
             return View();
@@ -216,6 +221,31 @@ namespace KB.Web.Controllers
             // TODO: Create new password, and email username and password to the user.
             // TODO: display confirmation message to the user
             //
+
+            try
+            {
+
+                Account account = this.dataRepository.GetAccount(model.AccountNameOrEmail);
+
+                if (account == null)
+                {
+                    account = this.dataRepository.GetAccountForEmail(model.AccountNameOrEmail);
+                }
+
+                if (account != null)
+                {
+                    // TODO: send email
+
+                    // TODO: redirect user to confirmation message
+
+
+                    return RedirectToAction("PasswordResetConfirm", "Account", new { email = account.Email });
+                }
+
+            }
+            catch
+            {
+            }
 
             return View();
         }

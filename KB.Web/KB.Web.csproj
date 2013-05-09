@@ -139,6 +139,11 @@
     <Compile Include="Models\EntryModel.cs" />
     <Compile Include="Models\EntryResponseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -274,6 +279,10 @@
     <Content Include="js\jquery.tablednd.js" />
     <Content Include="js\tablednd.js" />
     <Content Include="js\ui.multiselect.js" />
+    <Content Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </Content>
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\i18n\grid.locale-ar.js" />
     <Content Include="Scripts\i18n\grid.locale-bg.js" />
@@ -342,6 +351,7 @@
     <Content Include="Views\Default\DisplayTemplates\Entry.cshtml" />
     <Content Include="Views\Default\DisplayTemplates\Account.cshtml" />
     <Content Include="Views\Account\Page.cshtml" />
+    <Content Include="Views\Account\PasswordResetConfirm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_AccountPartial.cshtml" />

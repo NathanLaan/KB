@@ -230,6 +230,7 @@ namespace KB.Lib.Data
         private static readonly string SQL_ACCOUNT_INSERT = "INSERT INTO [Account] (Name,Email,Password,PasswordSalt,Timestamp) VALUES(@Name,@Email,@Password,@PasswordSalt,@Timestamp); SELECT last_insert_rowid();";
         private static readonly string SQL_ACCOUNT_SELECT_BY_ID = "SELECT ID,Name,Email,Password,PasswordSalt,Score,Timestamp FROM [Account] WHERE ID=@ID;";
         private static readonly string SQL_ACCOUNT_SELECT_BY_NAME = "SELECT ID,Name,Email,Password,PasswordSalt,Score,Timestamp FROM [Account] WHERE Name=@Name;";
+        private static readonly string SQL_ACCOUNT_SELECT_BY_EMAIL = "SELECT ID,Name,Email,Password,PasswordSalt,Score,Timestamp FROM [Account] WHERE Name=@Name;";
         private static readonly string SQL_ACCOUNT_SELECT_ALL = "SELECT ID,Name,Email,Password,PasswordSalt,Score,Timestamp FROM [Account] ORDER BY ID ASC;";
 
         private static readonly string SQL_Account_SELECT_PAGING
@@ -337,6 +338,33 @@ namespace KB.Lib.Data
                         //
                         // Read the first record only
                         //
+                        if (reader.Read())
+                        {
+                            account = ReadAccount(reader);
+                        }
+                    }
+                }
+                return account;
+            }
+            catch (Exception exception)
+            {
+                return null;
+            }
+        }
+
+        public Account GetAccountForEmail(string email)
+        {
+            try
+            {
+                Account account = new Account();
+                using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
+                {
+                    sqliteConnection.Open();
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ACCOUNT_SELECT_BY_EMAIL, sqliteConnection);
+                    sqlCommand.Parameters.AddWithValue("@Email", email);
+
+                    using (SQLiteDataReader reader = sqlCommand.ExecuteReader())
+                    {
                         if (reader.Read())
                         {
                             account = ReadAccount(reader);
