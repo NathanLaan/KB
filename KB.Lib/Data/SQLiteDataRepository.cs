@@ -103,7 +103,7 @@ namespace KB.Lib.Data
             = "SELECT Entry.ID,Entry.ParentID,Entry.AccountID,Entry.Title,Entry.Contents,Entry.Timestamp, "
             + "Account.Name,Account.Email,Account.Score, "
             + "EntryVote.Vote FROM [Entry],[Account] "
-            + "LEFT OUTER JOIN [EntryVote] ON Entry.ID=EntryVote.ID AND EntryVote.AccountID=@AccountID "
+            + "LEFT OUTER JOIN [EntryVote] ON Entry.ID=EntryVote.EntryID AND EntryVote.AccountID=@AccountID "
             + "WHERE Entry.ParentID=@ID AND Entry.AccountID=Account.ID ORDER BY Entry.Timestamp ASC;";
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace KB.Lib.Data
                     {
                         while (reader.Read())
                         {
-                            entryList.Add(ReadEntryAuthor(reader));
+                            entryList.Add(ReadEntryAuthorVote(reader));
                         }
                     }
                 }
@@ -552,6 +552,55 @@ namespace KB.Lib.Data
             entry.Author.ID = entry.AccountID;
             entry.Author.Name = reader.GetString(6);
             entry.Author.Email = reader.GetString(7);
+
+
+            return entry;
+        }
+
+        private Entry ReadEntryAuthorVote(SQLiteDataReader reader)
+        {
+            Entry entry = new Entry();
+            entry.ID = reader.GetInt32(0);
+            if (!reader.IsDBNull(1))
+            {
+                entry.ID = reader.GetInt32(1);
+            }
+            else
+            {
+                entry.ParentID = null;
+            }
+            entry.AccountID = reader.GetInt32(2);
+            entry.Title = reader.GetString(3);
+            entry.Contents = reader.GetString(4);
+            entry.Timestamp = reader.GetDateTime(5);
+
+            entry.Author = new Account();
+            entry.Author.ID = entry.AccountID;
+            entry.Author.Name = reader.GetString(6);
+            entry.Author.Email = reader.GetString(7);
+
+            if (reader.IsDBNull(9))
+            {
+                entry.Vote = 0;
+                entry.AuthorVote = false;
+                entry.AuthorVoteUp = false;
+                entry.AuthorVoteDown = false;
+            }
+            else
+            {
+                int vote = reader.GetInt32(9);
+                entry.AuthorVote = true;
+                if (vote > 0)
+                {
+                    entry.AuthorVoteUp = true;
+                    entry.AuthorVoteDown = false;
+                }
+                else
+                {
+                    entry.AuthorVoteUp = false;
+                    entry.AuthorVoteDown = true;
+                }
+            }
 
 
             return entry;

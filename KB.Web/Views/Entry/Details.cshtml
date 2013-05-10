@@ -20,7 +20,10 @@
         @Model.Entry.Timestamp
     </div>
     <div class="span1">
+        @if (@Model.Entry.AuthorVote){
+        }else{
         <input type="button" title="&#8593;" value="&#8593;" /><br /><input type="button" title="&#8595;" value="&#8595;" />
+        }
     </div>
 </div>
 

@@ -12,6 +12,15 @@
         @Model.Timestamp
     </div>
     <div class="span1">
-        <input type="button" title="&#8593;" value="&#8593;" /><br /><input type="button" title="&#8595;" value="&#8595;" />
+        @if ( @Model.AuthorVote ){
+            if (@Model.AuthorVoteUp)
+            {
+<div>&#8593;</div>
+            }else{
+<div>&#8595;</div>
+            }
+        }else{
+            <input type="button" title="&#8593;" value="&#8593;" /><br /><input type="button" title="&#8595;" value="&#8595;" />
+        }
     </div>
 </div>
