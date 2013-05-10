@@ -38,6 +38,7 @@ namespace KB.Lib.Data
         List<Entry> GetTopLevelEntryList(int page, int pageSize);
 
         List<Entry> GetEntryListForParent(int parentID);
+        List<Entry> GetEntryListForParentWithVotes(int parentID, int accountID);
 
         #endregion
 

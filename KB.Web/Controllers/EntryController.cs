@@ -111,7 +111,7 @@ namespace KB.Web.Controllers
         {
             EntryDetailsModel model = new EntryDetailsModel();
             model.Entry = this.dataRepository.GetEntry(id);
-            model.ResponseList = this.dataRepository.GetEntryListForParent(id);
+            model.ResponseList = this.dataRepository.GetEntryListForParentWithVotes(id, this.GetFormsAuthenticationID());
             return View(model);
         }
 

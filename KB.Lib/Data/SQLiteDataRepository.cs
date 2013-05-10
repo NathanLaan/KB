@@ -90,15 +90,21 @@ namespace KB.Lib.Data
         private static readonly string SQL_ENTRY_SELECT_BY_ID_WITH_Account =
             "SELECT Entry.ID,Entry.ParentID,Entry.AccountID,Entry.Title,Entry.Contents,Entry.Timestamp," +
             "Account.Name,Account.Email,Account.Score FROM [Entry] LEFT OUTER JOIN [Account] ON Entry.AccountID=Account.ID WHERE Entry.ID=@ID;";
-        private static readonly string SQL_ENTRY_SELECT_BY_ParentID_WITH_Account
-            = "SELECT Entry.ID,Entry.ParentID,Entry.AccountID,Entry.Title,Entry.Contents,Entry.Timestamp,"
-            + "Account.Name,Account.Email,Account.Score FROM [Entry] LEFT OUTER JOIN [Account] ON Entry.AccountID=Account.ID "
-            + "WHERE Entry.ParentID=@ID ORDER BY Entry.Timestamp ASC;";
         private static readonly string SQL_ENTRY_SELECT_NO_PARENT
             = "SELECT Entry.ID,Entry.ParentID,Entry.AccountID,Entry.Title,Entry.Contents,Entry.Timestamp,"
             + "Account.Name,Account.Email,Account.Score FROM [Entry] LEFT OUTER JOIN [Account] ON Entry.AccountID=Account.ID "
             + "WHERE Entry.ParentID IS NULL ORDER BY Entry.Timestamp DESC LIMIT @Limit OFFSET @Offset;";
 
+        private static readonly string SQL_ENTRY_SELECT_BY_ParentID_WITH_Account
+            = "SELECT Entry.ID,Entry.ParentID,Entry.AccountID,Entry.Title,Entry.Contents,Entry.Timestamp,"
+            + "Account.Name,Account.Email,Account.Score FROM [Entry] LEFT OUTER JOIN [Account] ON Entry.AccountID=Account.ID "
+            + "WHERE Entry.ParentID=@ID ORDER BY Entry.Timestamp ASC;";
+        private static readonly string SQL_ENTRY_SELECT_BY_ParentID_WITH_Account_AND_EntryVote
+            = "SELECT Entry.ID,Entry.ParentID,Entry.AccountID,Entry.Title,Entry.Contents,Entry.Timestamp, "
+            + "Account.Name,Account.Email,Account.Score, "
+            + "EntryVote.Vote FROM [Entry],[Account] "
+            + "LEFT OUTER JOIN [EntryVote] ON Entry.ID=EntryVote.ID AND EntryVote.AccountID=@AccountID "
+            + "WHERE Entry.ParentID=@ID AND Entry.AccountID=Account.ID ORDER BY Entry.Timestamp ASC;";
 
         /// <summary>
         /// All top-level entries (Entry with no parent).
@@ -147,6 +153,32 @@ namespace KB.Lib.Data
                     sqliteConnection.Open();
                     SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ENTRY_SELECT_BY_ParentID_WITH_Account, sqliteConnection);
                     sqlCommand.Parameters.AddWithValue("@ID", parentID);
+                    using (SQLiteDataReader reader = sqlCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            entryList.Add(ReadEntryAuthor(reader));
+                        }
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                return null;
+            }
+            return entryList;
+        }
+        public List<Entry> GetEntryListForParentWithVotes(int parentID, int accountID)
+        {
+            List<Entry> entryList = new List<Entry>();
+            try
+            {
+                using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
+                {
+                    sqliteConnection.Open();
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ENTRY_SELECT_BY_ParentID_WITH_Account_AND_EntryVote, sqliteConnection);
+                    sqlCommand.Parameters.AddWithValue("@ID", parentID);
+                    sqlCommand.Parameters.AddWithValue("@AccountID", accountID);
                     using (SQLiteDataReader reader = sqlCommand.ExecuteReader())
                     {
                         while (reader.Read())
@@ -520,7 +552,8 @@ namespace KB.Lib.Data
             entry.Author.ID = entry.AccountID;
             entry.Author.Name = reader.GetString(6);
             entry.Author.Email = reader.GetString(7);
-            //entry.Author.Score = reader.GetString(6);
+
+
             return entry;
         }
 
