@@ -1,16 +1,16 @@
 ﻿@model KB.Web.Models.AccountIndexModel
 
 @{
-    ViewBag.Title = "KB Entries";
+    ViewBag.Title = "KB Users";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Entries - Page @Model.Page (@Model.Min to @Model.Max)</h2>
 
-@foreach (var entry in @Model.List) {
+@foreach (var account in @Model.List) {
 <div class="row">
     <div class="span7">
-        <b><a href="/entry/details/@entry.ID">@entry.Name</a></b>
+        <b><a href="/account/details/@account.ID">@account.Name</a></b>
     </div>
 </div>
 }

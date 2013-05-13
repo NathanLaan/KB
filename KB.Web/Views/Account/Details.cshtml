@@ -10,6 +10,7 @@
         <h2>@Model.Account.Name</h2>
     </div>
 </div>
+<br /><br />
 <div class="row">
     <div class="span3">
         <b>@Model.TotalEntryCount entries posted.</b>
@@ -21,6 +22,14 @@
         <b>@Model.TotalVotesCount votes made.</b>
     </div>
 </div>
+<br /><br />
+<div class="row">
+    <div class="span12">
+        Account created @Model.Account.Timestamp
+    </div>
+</div>
+<br /><br />
+
 @foreach (var entity in @Model.EntryList) {
     @Html.DisplayFor(m => entity)
 }

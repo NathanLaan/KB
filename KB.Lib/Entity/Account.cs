@@ -12,5 +12,6 @@ namespace KB.Lib.Entity
         public string Password { get; set; }
         public string PasswordSalt { get; set; }
         public DateTime Timestamp { get; set; }
+        public bool SendEmailNotifications { get; set; }
     }
 }
