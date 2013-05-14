@@ -130,9 +130,10 @@
     <Compile Include="Models\AccountDetailsModel.cs" />
     <Compile Include="Models\AccountListModel.cs" />
     <Compile Include="Models\AccountLoginModel.cs" />
+    <Compile Include="Models\AccountManageModel.cs" />
     <Compile Include="Models\AccountRegisterModel.cs" />
     <Compile Include="Models\AccountIndexModel.cs" />
-    <Compile Include="Models\AccoutPasswordResetModel.cs" />
+    <Compile Include="Models\AccountPasswordResetModel.cs" />
     <Compile Include="Models\DashboardModel.cs" />
     <Compile Include="Models\EntryDetailsModel.cs" />
     <Compile Include="Models\EntryIndexModel.cs" />

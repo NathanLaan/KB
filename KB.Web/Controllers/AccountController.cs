@@ -63,8 +63,22 @@ namespace KB.Web.Controllers
         {
             int id = this.GetFormsAuthenticationID();
             Account account = this.dataRepository.GetAccount(id);
-            return View(account);
+            AccountManageModel model = new AccountManageModel();
+            model.Account = account;
+            model.Email = account.Email;
+            model.SendEmailNotifications = account.SendEmailNotifications;
+            return View(model);
         }
+        [Authorize]
+        [HttpPost]
+        public ActionResult Manage(AccountManageModel model)
+        {
+            //
+            // TODO: update account
+            //
+            return View(model);
+        }
+
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
@@ -215,7 +229,7 @@ namespace KB.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult PasswordReset(AccoutPasswordResetModel model)
+        public ActionResult PasswordReset(AccountPasswordResetModel model)
         {
             //
             // TODO: Create new password, and email username and password to the user.
