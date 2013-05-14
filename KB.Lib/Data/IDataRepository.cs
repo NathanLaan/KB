@@ -45,6 +45,8 @@ namespace KB.Lib.Data
 
         #region Account
 
+        void Update(Account account);
+
         /// <summary>
         /// Creates the account, and populates the ID field.
         /// </summary>

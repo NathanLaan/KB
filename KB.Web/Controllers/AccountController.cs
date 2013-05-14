@@ -64,7 +64,7 @@ namespace KB.Web.Controllers
             int id = this.GetFormsAuthenticationID();
             Account account = this.dataRepository.GetAccount(id);
             AccountManageModel model = new AccountManageModel();
-            model.Account = account;
+            model.Name = account.Name;
             model.Email = account.Email;
             model.SendEmailNotifications = account.SendEmailNotifications;
             return View(model);
@@ -73,6 +73,29 @@ namespace KB.Web.Controllers
         [HttpPost]
         public ActionResult Manage(AccountManageModel model)
         {
+            int id = this.GetFormsAuthenticationID();
+            Account account = this.dataRepository.GetAccount(id);
+
+            string encryptedPasswordNew = SecurityUtil.GenerateEncryptedPassword(model.PasswordOld, account.PasswordSalt).Password;
+
+            if (account.Password == encryptedPasswordNew)
+            {
+                if (!string.IsNullOrEmpty(model.PasswordNew) && model.PasswordNew == model.PasswordNewConfirm)
+                {
+                    // create new encrypted password using the same SALT
+                    account.Password = SecurityUtil.GenerateEncryptedPassword(model.PasswordNew, account.PasswordSalt).Password;
+                }
+                this.dataRepository.Update(account);
+
+            }
+            else
+            {
+                //
+                // TODO: display error message
+                //
+            }
+
+
             //
             // TODO: update account
             //

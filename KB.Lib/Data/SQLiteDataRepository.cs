@@ -268,6 +268,7 @@ namespace KB.Lib.Data
         private static readonly string SQL_Account_SELECT_PAGING
             = "SELECT ID,Name,Email,Password,PasswordSalt,Score,Timestamp FROM [Account] ORDER BY Account.ID DESC LIMIT @Limit OFFSET @Offset;";
 
+
         public List<Account> GetAccountListPaged(int page, int pageSize)
         {
             List<Account> accountList = new List<Account>();
@@ -436,6 +437,11 @@ namespace KB.Lib.Data
             {
                 return null;
             }
+        }
+
+
+        public void Update(Account account)
+        {
         }
 
         #endregion
