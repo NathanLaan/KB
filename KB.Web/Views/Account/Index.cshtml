@@ -10,7 +10,7 @@
 @foreach (var account in @Model.List) {
 <div class="row">
     <div class="span7">
-        <b><a href="/account/details/@account.ID">@account.Name</a></b>
+        <b><a href="/user/details/@account.ID">@account.Name</a></b>
     </div>
 </div>
 }
@@ -19,13 +19,13 @@
 <div class="row">
 <div class="span2">
 @if(@Model.Page > 1){
-@Html.ActionLink("Prev Page", "Page", "Entry", new { id = @Model.Page - 1}, null)
+@Html.ActionLink("Prev Page", "Page", "Account", new { id = @Model.Page - 1}, null)
 }
 </div>
 <div class="span2">
 Page @Model.Page - @Model.Min to @Model.Max
 </div>
 <div class="span2">
-@Html.ActionLink("Next Page", "Page", "Entry", new { id = @Model.Page + 1}, null)
+@Html.ActionLink("Next Page", "Page", "Account", new { id = @Model.Page + 1}, null)
 </div>
 </div>

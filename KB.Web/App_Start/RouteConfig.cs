@@ -14,6 +14,16 @@ namespace KB.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "Users",
+                url: "users/{action}/{id}",
+                defaults: new { controller = "Account", action = "Index", id = UrlParameter.Optional }
+            );
+            routes.MapRoute(
+                name: "User",
+                url: "user/{action}/{id}",
+                defaults: new { controller = "Account", action = "Index", id = UrlParameter.Optional }
+            );
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Default", action = "Index", id = UrlParameter.Optional }
