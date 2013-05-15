@@ -8,6 +8,10 @@ namespace KB.Lib.Data
     {
 
 
+
+        List<Entry> Search(string searchString, int page, int pageSize);
+
+
         /// <summary>
         /// Return the value passed in, with the ID filled in. Do I really need this, or just following the pattern???
         /// </summary>

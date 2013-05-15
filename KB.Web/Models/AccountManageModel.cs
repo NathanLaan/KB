@@ -17,7 +17,7 @@ namespace KB.Web.Models
         public string Email { get; set; }
 
         [Required]
-        [Display(Name = "Old Password")]
+        [Display(Name = "Current Password")]
         public string PasswordOld { get; set; }
 
         [DataType(DataType.Password)]

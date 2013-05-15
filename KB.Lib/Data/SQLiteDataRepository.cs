@@ -534,6 +534,8 @@ namespace KB.Lib.Data
             account.Email = reader.GetString(2);
             account.Password = reader.GetString(3);
             account.PasswordSalt = reader.GetString(4);
+            //account.Score = reader.GetInt32(5);
+            account.Timestamp = reader.GetDateTime(6);
             return account;
         }
 
@@ -759,6 +761,56 @@ namespace KB.Lib.Data
         }
 
         #endregion
+
+
+
+        #region Search
+
+
+
+        private static readonly string SQL_SEARCH 
+            = "SELECT e.ID,e.ParentID,e.Title,e.AccountID,a.Name FROM [Entry] e "
+            + "LEFT JOIN [Account] a ON e.AccountID=a.ID "
+            + "WHERE e.Title LIKE '%' + @SEARCH + '%' OR e.Contents LIKE '%' + @Search + '%' "
+            + "ORDER BY e.Timestamp DESC LIMIT @Limit OFFSET @Offset;";
+
+
+        public List<Entry> Search(string searchString, int page, int pageSize)
+        {
+            List<Entry> entryList = new List<Entry>();
+            try
+            {
+                using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
+                {
+                    //
+                    // "SELECT ID FROM Entry ORDER BY Timestamp ASC LIMIT 2 OFFSET 1"
+                    //
+                    // LIMIT = pageSize
+                    // OFFSET = page * pageSize
+                    //
+                    sqliteConnection.Open();
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_SEARCH, sqliteConnection);
+                    sqlCommand.Parameters.AddWithValue("@Search", searchString);
+                    sqlCommand.Parameters.AddWithValue("@Limit", pageSize);
+                    sqlCommand.Parameters.AddWithValue("@Offset", (page - 1) * pageSize);
+                    using (SQLiteDataReader reader = sqlCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            entryList.Add(ReadEntryAuthor(reader));
+                        }
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                return null;
+            }
+            return entryList;
+        }
+
+        #endregion
+
 
     }
 }
