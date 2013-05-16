@@ -20,10 +20,18 @@
         @Model.Entry.Timestamp
     </div>
     <div class="span1">
-        @if (@Model.Entry.AuthorVote){
-        }else{
-        <input type="button" title="&#8593;" value="&#8593;" /><br /><input type="button" title="&#8595;" value="&#8595;" />
-        }
+        
+@if (Request.IsAuthenticated)
+{
+    if (@Model.Entry.AuthorVote)
+    {
+    //todo: show total number of votes +/-
+    }else{
+    <input type="button" title="&#8593;" value="&#8593;" /><br /><input type="button" title="&#8595;" value="&#8595;" />
+    }
+}else{
+    //todo: show total number of votes +/-
+}
     </div>
 </div>
 

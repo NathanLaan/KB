@@ -117,9 +117,16 @@ namespace KB.Web.Controllers
 
         private int GetFormsAuthenticationID()
         {
-            FormsIdentity id = (FormsIdentity)User.Identity;
-            FormsAuthenticationTicket ticket = id.Ticket;
-            return int.Parse(ticket.UserData);
+            try
+            {
+                FormsIdentity id = (FormsIdentity)User.Identity;
+                FormsAuthenticationTicket ticket = id.Ticket;
+                return int.Parse(ticket.UserData);
+            }
+            catch
+            {
+                return -999;
+            }
         }
 
         //
