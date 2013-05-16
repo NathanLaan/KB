@@ -21,21 +21,13 @@ namespace KB.Web.Controllers
         {
             return View();
         }
-        public ActionResult Results(string searchString, int page)
+        public ActionResult Results(string searchString, int page=1)
         {
             SearchModel model = new SearchModel();
             model.SearchString = searchString;
             model.Page = page;
             model.PageSize = 20;
             this.dataRepository.Search(searchString, model.Page, model.PageSize);
-            return View(model);
-        }
-        public ActionResult Page(int id = 1)
-        {
-            EntryIndexModel model = new EntryIndexModel();
-            model.Page = id;
-            model.PageSize = 10;
-            model.List = this.dataRepository.GetTopLevelEntryList(model.Page, model.PageSize);
             return View(model);
         }
 
