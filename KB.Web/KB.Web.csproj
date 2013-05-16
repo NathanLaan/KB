@@ -139,6 +139,8 @@
     <Compile Include="Models\EntryIndexModel.cs" />
     <Compile Include="Models\EntryModel.cs" />
     <Compile Include="Models\EntryResponseModel.cs" />
+    <Compile Include="Models\PagedModel.cs" />
+    <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

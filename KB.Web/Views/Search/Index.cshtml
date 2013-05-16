@@ -5,4 +5,28 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Search</h2>
+@using (Html.BeginForm("results", "search", FormMethod.Post, new { @class = "form-inline" }))
+{
+    
+<div class="row">
+<div class="span12">
+<h2>Search KB Entries</h2>
+</div>
+</div>
+    
+    <br />
+    
+<div class="row">
+<div class="span12">
+    @Html.TextBoxFor(m => m.SearchString, new { @class = "input-xxlarge" })
+</div>
+</div>
+    
+<br />
+    
+<div class="row">
+<div class="span12">
+    <input type="submit" value="Search" />
+</div>
+</div>
+}

@@ -7,6 +7,6 @@ namespace KB.Lib.Entity
 {
     public class Search
     {
-        public string QueryString { get; set; }
+        public string SearchString { get; set; }
     }
 }
