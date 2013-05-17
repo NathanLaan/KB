@@ -17,18 +17,21 @@ namespace KB.Web.Controllers
             this.dataRepository = new SQLiteDataRepository(System.Web.HttpContext.Current.Server.MapPath(cs));
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string searchString = "", int page = 1)
         {
-            return View();
-        }
-        public ActionResult Results(string searchString, int page=1)
-        {
-            SearchModel model = new SearchModel();
-            model.SearchString = searchString;
-            model.Page = page;
-            model.PageSize = 20;
-            this.dataRepository.Search(searchString, model.Page, model.PageSize);
-            return View(model);
+            if (string.IsNullOrEmpty(searchString))
+            {
+                return View();
+            }
+            else
+            {
+                SearchModel model = new SearchModel();
+                model.SearchString = searchString;
+                model.Page = page;
+                model.PageSize = 10;
+                model.List = this.dataRepository.Search(searchString, model.Page, model.PageSize);
+                return View("Results", model);
+            }
         }
 
     }

@@ -5,16 +5,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using (Html.BeginForm("results", "search", FormMethod.Post, new { @class = "form-inline" }))
+@using (Html.BeginForm("index", "search", FormMethod.Get, new { @class = "form-inline" } ))
 {
-    
 <div class="row">
 <div class="span12">
 <h2>Search KB Entries</h2>
 </div>
 </div>
-    
-    <br />
+<br />
     
 <div class="row">
 <div class="span12">

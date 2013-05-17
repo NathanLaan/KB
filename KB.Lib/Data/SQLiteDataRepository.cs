@@ -545,7 +545,7 @@ namespace KB.Lib.Data
             entry.ID = reader.GetInt32(0);
             if (!reader.IsDBNull(1))
             {
-                entry.ID = reader.GetInt32(1);
+                entry.ParentID = reader.GetInt32(1);
             }
             else
             {
@@ -768,10 +768,10 @@ namespace KB.Lib.Data
 
 
 
-        private static readonly string SQL_SEARCH 
-            = "SELECT e.ID,e.ParentID,e.Title,e.AccountID,a.Name FROM [Entry] e "
+        private static readonly string SQL_SEARCH
+            = "SELECT e.ID,e.ParentID,e.AccountID,e.Title,e.Timestamp,a.Name FROM [Entry] e "
             + "LEFT JOIN [Account] a ON e.AccountID=a.ID "
-            + "WHERE e.Title LIKE '%' + @SEARCH + '%' OR e.Contents LIKE '%' + @Search + '%' "
+            + "WHERE e.Title LIKE @Search OR e.Contents LIKE @Search "
             + "ORDER BY e.Timestamp DESC LIMIT @Limit OFFSET @Offset;";
 
 
@@ -790,14 +790,31 @@ namespace KB.Lib.Data
                     //
                     sqliteConnection.Open();
                     SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_SEARCH, sqliteConnection);
-                    sqlCommand.Parameters.AddWithValue("@Search", searchString);
+                    sqlCommand.Parameters.AddWithValue("@Search", "%" + searchString + "%");
                     sqlCommand.Parameters.AddWithValue("@Limit", pageSize);
                     sqlCommand.Parameters.AddWithValue("@Offset", (page - 1) * pageSize);
                     using (SQLiteDataReader reader = sqlCommand.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            entryList.Add(ReadEntryAuthor(reader));
+                            Entry entry = new Entry();
+                            entry.ID = reader.GetInt32(0);
+                            if (!reader.IsDBNull(1))
+                            {
+                                entry.ParentID = reader.GetInt32(1);
+                            }
+                            else
+                            {
+                                entry.ParentID = null;
+                            }
+                            entry.AccountID = reader.GetInt32(2);
+                            entry.Title = reader.GetString(3);
+                            entry.Timestamp = reader.GetDateTime(4);
+
+                            entry.Author = new Account();
+                            entry.Author.ID = entry.AccountID;
+                            entry.Author.Name = reader.GetString(5);
+                            entryList.Add(entry);
                         }
                     }
                 }
