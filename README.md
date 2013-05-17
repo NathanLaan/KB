@@ -3,6 +3,8 @@ KB Knowledgebase Repository
 
 Demo version: http://kbcenter.net
 
+- [x] Config file to store root URL for email notifications.
+- [x] Basic search functionality for entry titles and content.
 - [ ] Markdown formatting for Entry body.
 - [ ] User account registration needs to check if email already exists.
 - [ ] User Membership.
@@ -18,4 +20,3 @@ Demo version: http://kbcenter.net
 - [ ] Home page: number of users, number of entries, number of replies.
 - [ ] Change /ACCOUNT view to use paged data like /ENTRY view.
 - [ ] Automatic subscription to Entry updates when you create an entry or reply.
-- [x] Config file to store root URL for email notifications.
