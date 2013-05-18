@@ -15,7 +15,7 @@
     
 <div class="row">
     <div class="span7">
-        @Model.Entry.Contents
+        @Html.Raw(@Model.Entry.HtmlContents)
         <br />
         <br />
     </div>

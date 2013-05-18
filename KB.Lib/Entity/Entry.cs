@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using MarkdownSharp;
 
 namespace KB.Lib.Entity
 {
@@ -25,6 +26,14 @@ namespace KB.Lib.Entity
         public bool AuthorVote { get; set; }
         public bool AuthorVoteUp { get; set; }
         public bool AuthorVoteDown { get; set; }
+
+        public System.Web.HtmlString HtmlContents
+        {
+            get
+            {
+                return new Markdown().Transform(this.Contents);
+            }
+        }
 
     }
 }
