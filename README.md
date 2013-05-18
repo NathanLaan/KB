@@ -5,7 +5,8 @@ Demo version: http://kbcenter.net
 
 - [x] Config file to store root URL for email notifications.
 - [x] Basic search functionality for entry titles and content.
-- [ ] Markdown formatting for Entry body.
+- [x] Markdown formatting for Entry contents.
+- [ ] Need to add Markdown help notes/links/content.
 - [ ] User account registration needs to check if email already exists.
 - [ ] User Membership.
 - [ ] User registration.

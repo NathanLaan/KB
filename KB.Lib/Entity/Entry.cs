@@ -27,7 +27,7 @@ namespace KB.Lib.Entity
         public bool AuthorVoteUp { get; set; }
         public bool AuthorVoteDown { get; set; }
 
-        public System.Web.HtmlString HtmlContents
+        public string HtmlContents
         {
             get
             {
