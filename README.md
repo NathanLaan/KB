@@ -8,16 +8,16 @@ Demo version: http://kbcenter.net
 - [x] Markdown formatting for Entry contents.
 - [ ] Need to add Markdown help notes/links/content.
 - [ ] User account registration needs to check if email already exists.
-- [ ] User Membership.
-- [ ] User registration.
+- [+] User Membership.
+- [x] User registration.
 - [ ] Password reset via email.
 - [ ] Configuration for sending mail.
-- [ ] First user "administrator"? Not neccessary?
-- [ ] Create Entry/Response. Response = Entry with parent.
+- [*] First user "administrator"? Not neccessary?
+- [x] Create Entry/Response. Response = Entry with parent.
 - [ ] Voting up or down.
 - [ ] Only vote once.
 - [ ] Any user can edit entries?
 - [ ] User ranking?
-- [ ] Home page: number of users, number of entries, number of replies.
-- [ ] Change /ACCOUNT view to use paged data like /ENTRY view.
+- [+] Home page: number of users, number of entries, number of replies.
+- [x] Change /ACCOUNT view to use paged data like /ENTRY view.
 - [ ] Automatic subscription to Entry updates when you create an entry or reply.
