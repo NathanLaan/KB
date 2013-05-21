@@ -17,7 +17,7 @@ Demo version: http://kbcenter.net
 - [ ] Voting up or down.
 - [ ] Only vote once.
 - [ ] Any user can edit entries?
-- [ ] User ranking?
+- [ ] User ranking? Based on numerical addition of number of posts.
 - [+] Home page: number of users, number of entries, number of replies.
 - [x] Change /ACCOUNT view to use paged data like /ENTRY view.
 - [ ] Automatic subscription to Entry updates when you create an entry or reply.
