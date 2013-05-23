@@ -231,6 +231,7 @@
     <Content Include="css\ui.jqgrid.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="js\bootstrap-markdown.js" />
     <Content Include="js\bootstrap.js" />
     <Content Include="js\bootstrap.min.js" />
     <Content Include="js\bootswatch.js" />

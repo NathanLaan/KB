@@ -16,7 +16,7 @@
 
     <br />
     @Html.LabelFor(m => m.Contents)
-    @Html.TextAreaFor(m => m.Contents, 15, 200, new { @class = "input-xxlarge" })
+    @Html.TextAreaFor(m => m.Contents, 15, 200, new { @class = "input-xxlarge", @data_provide = "markdown" })
     @Html.ValidationMessageFor(m => m.Contents)
 
     <br />
