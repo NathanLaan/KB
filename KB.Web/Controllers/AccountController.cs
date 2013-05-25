@@ -228,6 +228,20 @@ namespace KB.Web.Controllers
                     {
                         //FormsAuthentication.SetAuthCookie(account.Name, true);
                         this.Login(account);
+
+                        //todo: send email notification
+                        MailUtil.SendMail(
+                            KB.Web.Properties.Settings.Default.MailServer,
+                            KB.Web.Properties.Settings.Default.MailPort,
+                            Properties.Settings.Default.MailUsername,
+                            Properties.Settings.Default.MailPassword,
+                            Properties.Settings.Default.MailUsername,
+                            "KB",
+                            account.Email,
+                            account.Name,
+                            "KB Account Created",
+                            "KB Account Created: " + account.Name + " - " + account.Email,
+                            true);
                         
                         return RedirectToAction("Index", "Default");
                     }
