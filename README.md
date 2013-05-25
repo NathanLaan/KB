@@ -5,15 +5,16 @@ Demo version: http://kbcenter.net
 
 - [ ] User Membership.
     - [ ] User account registration needs to check if email already exists.
-    - [ ] User account registration needs 
-    - [x] User registration.
+    - [ ] User account registration needs to send confirmation email.
     - [ ] Password reset via email.
     - [ ] Configuration for sending mail.
+    - [x] Basic user registration.
 - [ ] Need to add Markdown help notes/links/content.
-- [ ] Voting up or down.
-- [ ] Only vote once.
-- [ ] Any user can edit entries?
+- [ ] Voting
+    - [ ] Voting up or down.
+    - [ ] Only vote once.
 - [ ] User ranking? Based on numerical addition of number of posts.
+- [ ] Any user can edit entries?
 - [ ] Automatic subscription to Entry updates when you create an entry or reply.
 - [x] Home page: number of users, number of entries, number of replies.
 - [x] Change /ACCOUNT view to use paged data like /ENTRY view.
