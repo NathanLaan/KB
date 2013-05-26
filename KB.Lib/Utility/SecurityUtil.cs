@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace KB.Lib.Utility
 {
@@ -43,6 +44,21 @@ namespace KB.Lib.Utility
             encryptedPassword.PasswordSalt = passwordSalt;
 
             return encryptedPassword;
+        }
+
+        public static string GenerateRandomPassword(int length)
+        {
+            // http://stackoverflow.com/questions/1122483/c-sharp-random-string-generator
+            // http://stackoverflow.com/questions/54991/generating-random-passwords
+            string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            StringBuilder sb = new StringBuilder();
+            Random random = new Random();
+            char ch;
+            for (int i = 0; i < length; i++)
+            {
+                sb.Append(valid[random.Next(valid.Length)]);
+            }
+            return sb.ToString();
         }
 
     }

@@ -231,8 +231,8 @@ namespace KB.Web.Controllers
 
                         //todo: send email notification
                         MailUtil.SendMail(
-                            KB.Web.Properties.Settings.Default.MailServer,
-                            KB.Web.Properties.Settings.Default.MailPort,
+                            Properties.Settings.Default.MailServer,
+                            Properties.Settings.Default.MailPort,
                             Properties.Settings.Default.MailUsername,
                             Properties.Settings.Default.MailPassword,
                             Properties.Settings.Default.MailUsername,
@@ -294,17 +294,50 @@ namespace KB.Web.Controllers
 
                 if (account != null)
                 {
-                    // TODO: send email
+                    // generate new password
+                    string newPassword = SecurityUtil.GenerateRandomPassword(6);
+
+                    SecurityUtil.EncryptedPassword encryptedPassword = SecurityUtil.GenerateEncryptedPassword(newPassword);
+                    account.Password = encryptedPassword.Password;
+                    account.PasswordSalt = encryptedPassword.PasswordSalt;
+
+                    this.dataRepository.Update(account);
+
+                    MailUtil.SendMail(
+                        Properties.Settings.Default.MailServer,
+                        Properties.Settings.Default.MailPort,
+                        Properties.Settings.Default.MailUsername,
+                        Properties.Settings.Default.MailPassword,
+                        Properties.Settings.Default.MailUsername,
+                        "KB",
+                        account.Email,
+                        account.Name,
+                        "KB Account Password Reset",
+                        "New password: " 
+                            + newPassword 
+                            + System.Environment.NewLine 
+                            + System.Environment.NewLine 
+                            + Properties.Settings.Default.BaseUrl + "/users/login",
+                        true);
 
                     // TODO: redirect user to confirmation message
 
 
                     return RedirectToAction("PasswordResetConfirm", "Account", new { email = account.Email });
                 }
+                else
+                {
+                    //
+                    // TODO: if account is still NULL then display error message to user.
+                    //
+                }
 
             }
-            catch
+            catch(Exception exception)
             {
+                //
+                // TODO: Logging? Recovery?
+                //
             }
 
             return View();
