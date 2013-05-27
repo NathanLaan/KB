@@ -264,9 +264,9 @@ namespace KB.Web.Controllers
         }
 
 
-        public ActionResult PasswordResetConfirm(string email)
+        public ActionResult PasswordResetConfirm(AccountPasswordResetModel model)
         {
-            return View();
+            return View(model);
         }
 
         public ActionResult PasswordReset()
@@ -323,7 +323,7 @@ namespace KB.Web.Controllers
                     // TODO: redirect user to confirmation message
 
 
-                    return RedirectToAction("PasswordResetConfirm", "Account", new { email = account.Email });
+                    return RedirectToAction("PasswordResetConfirm", "Account", new { accountInfo = model.AccountNameOrEmail });
                 }
                 else
                 {

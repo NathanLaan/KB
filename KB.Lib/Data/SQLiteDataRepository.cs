@@ -258,7 +258,7 @@ namespace KB.Lib.Data
 
         #region Account
 
-
+        private static readonly string SQL_ACCOUNT_UPDATE = "UPDATE [Account] SET Email=@Email, Password=@Password, PasswordSalt=@PasswordSalt WHERE Name=@Name;";
         private static readonly string SQL_ACCOUNT_INSERT = "INSERT INTO [Account] (Name,Email,Password,PasswordSalt,Timestamp) VALUES(@Name,@Email,@Password,@PasswordSalt,@Timestamp); SELECT last_insert_rowid();";
         private static readonly string SQL_ACCOUNT_SELECT_BY_ID = "SELECT ID,Name,Email,Password,PasswordSalt,Score,Timestamp FROM [Account] WHERE ID=@ID;";
         private static readonly string SQL_ACCOUNT_SELECT_BY_NAME = "SELECT ID,Name,Email,Password,PasswordSalt,Score,Timestamp FROM [Account] WHERE Name=@Name;";
@@ -442,6 +442,22 @@ namespace KB.Lib.Data
 
         public void Update(Account account)
         {
+            try
+            {
+                using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
+                {
+                    sqliteConnection.Open();
+                    SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ACCOUNT_UPDATE, sqliteConnection);
+                    sqlCommand.Parameters.AddWithValue("@Name", account.Name);
+                    sqlCommand.Parameters.AddWithValue("@Email", account.Email);
+                    sqlCommand.Parameters.AddWithValue("@Password", account.Password);
+                    sqlCommand.Parameters.AddWithValue("@PasswordSalt", account.PasswordSalt);
+                    sqlCommand.ExecuteNonQuery();
+                }
+            }
+            catch (Exception exception)
+            {
+            }
         }
 
         #endregion
