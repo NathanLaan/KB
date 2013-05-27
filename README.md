@@ -6,8 +6,9 @@ Demo version: http://kbcenter.net
 - [ ] User Membership.
     - [ ] User account registration needs to check if email already exists.
     - [ ] User account registration needs to send confirmation email.
-    - [ ] Password reset via email.
     - [ ] Configuration for sending mail.
+    - [ ] Account update functionality.
+    - [x] Password reset via email.
     - [x] Basic user registration.
 - [ ] Need to add Markdown help notes/links/content.
 - [ ] Voting
