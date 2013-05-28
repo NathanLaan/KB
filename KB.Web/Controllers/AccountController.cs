@@ -313,11 +313,12 @@ namespace KB.Web.Controllers
                         account.Email,
                         account.Name,
                         "KB Account Password Reset",
-                        "New password: " 
+                        "A password reset was requested for your account <b>" + account.Name + "</b>"
+                            + "<br/><br/>Your password has been reset: " 
                             + newPassword 
                             + System.Environment.NewLine 
                             + System.Environment.NewLine 
-                            + Properties.Settings.Default.BaseUrl + "/users/login",
+                            + "<br/><br/>" + Properties.Settings.Default.BaseUrl + "/users/login",
                         true);
 
                     // TODO: redirect user to confirmation message
