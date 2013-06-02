@@ -8,6 +8,25 @@ namespace KB.Lib.Data
     {
 
 
+        #region Tag
+
+        /// <summary>
+        /// Get the list of all Tags in the system.
+        /// </summary>
+        /// <returns></returns>
+        List<Tag> GetTagList();
+
+        List<Entry> GetEntryListForTag(string tagName);
+
+        /// <summary>
+        /// Add the list of tags to the specified Entry. Checks if tags allready exist, and inserts new Tags as needed.
+        /// </summary>
+        /// <param name="entryID"></param>
+        /// <param name="tagList"></param>
+        void AddTagListForEntry(int entryID, List<Tag> tagList);
+
+        #endregion Tag
+
 
         List<Entry> Search(string searchString, int page, int pageSize);
 

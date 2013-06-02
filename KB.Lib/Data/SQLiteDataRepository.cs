@@ -20,6 +20,33 @@ namespace KB.Lib.Data
         #endregion
 
 
+
+
+        #region Tag
+
+        public List<Tag> GetTagList()
+        {
+            List<Tag> list = new List<Tag>();
+
+            return list;
+        }
+
+        public List<Entry> GetEntryListForTag(string tagName)
+        {
+            List<Entry> list = new List<Entry>();
+
+            return list;
+        }
+
+        public void AddTagListForEntry(int entryID, List<Tag> tagList)
+        {
+        }
+
+        #endregion Tag
+
+
+
+
         private static readonly string SQL_EntryVote_SELECT
             = "SELECT ID,EntryID,AccountID,Vote FROM [EntryVote]"
             + "WHERE EntryID=@EntryID AND AccountID=@AccountID;";
