@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -149,8 +150,20 @@ namespace KB.Web.Controllers
                         entry.Timestamp = DateTime.Now;
                         entry = this.dataRepository.Add(entry);
 
+
+
                         if (entry != null && entry.ID >= 0)
                         {
+                            #region Tags
+                            string[] tags = model.TagListString.Split(new char[] { ' ', ',' });
+                            List<Tag> tagList = new List<Tag>();
+                            foreach (string tag in tags)
+                            {
+                                tagList.Add(new Tag(tag));
+                            }
+                            this.dataRepository.AddTagListForEntry(entry.ID, tagList);
+                            #endregion
+
                             return RedirectToAction("Details", "Entry", new { id = entry.ID });
                         }
                         else

@@ -10,5 +10,10 @@ namespace KB.Lib.Entity
 
         public string Name { get; set; }
 
+        public Tag(string name)
+        {
+            this.Name = name;
+        }
+
     }
 }
