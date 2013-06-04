@@ -40,6 +40,19 @@ namespace KB.Lib.Data
 
         public void AddTagListForEntry(int entryID, List<Tag> tagList)
         {
+            try
+            {
+                using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
+                {
+                    SQLiteTransaction transaction = sqliteConnection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+                    foreach (Tag tag in tagList)
+                    {
+                    }
+                }
+            }
+            catch
+            {
+            }
         }
 
         #endregion Tag
