@@ -159,7 +159,7 @@ namespace KB.Web.Controllers
                             List<Tag> tagList = new List<Tag>();
                             foreach (string tag in tags)
                             {
-                                tagList.Add(new Tag(tag));
+                                tagList.Add(new Tag(tag.ToLower()));
                             }
                             this.dataRepository.AddTagListForEntry(entry.ID, tagList);
                             #endregion

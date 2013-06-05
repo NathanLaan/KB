@@ -9,7 +9,7 @@
     </div>
     <div class="span4">
         Posted by: <a href="/account/details/@Model.Author.ID">@Model.Author.Name</a><br />
-        @Model.Timestamp
+        @Model.Timestamp.ToString("ddd MMM yyyy - HH:mm")
     </div>
     <div class="span1">
         @if ( @Model.AuthorVote ){

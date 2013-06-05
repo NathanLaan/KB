@@ -15,7 +15,7 @@
         <b><a href="/entry/details/@entry.ID">@entry.Title</a></b>
     </div>
     <div class="span5">
-        Posted by: <a href="/account/details/@entry.Author.ID">@entry.Author.Name</a> - @entry.Timestamp
+        Posted by: <a href="/account/details/@entry.Author.ID">@entry.Author.Name</a> on @entry.Timestamp.ToString("ddd MMM yyyy")
     </div>
 </div>
 }

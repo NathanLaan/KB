@@ -44,9 +44,13 @@ namespace KB.Lib.Data
             {
                 using (SQLiteConnection sqliteConnection = new SQLiteConnection(this.connectionString))
                 {
-                    SQLiteTransaction transaction = sqliteConnection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+                    SQLiteTransaction transaction = sqliteConnection.BeginTransaction(System.Data.IsolationLevel.RepeatableRead);
                     foreach (Tag tag in tagList)
                     {
+                        SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ACCOUNT_INSERT, sqliteConnection);
+                        sqlCommand.Parameters.AddWithValue("@Tag", tag.Name);
+                        object returnValue = sqlCommand.ExecuteScalar();
+                        int id = int.Parse(returnValue.ToString());
                     }
                 }
             }

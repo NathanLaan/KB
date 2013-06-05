@@ -20,8 +20,8 @@
         <br />
     </div>
     <div class="span4">
-        <a href="/account/details/@Model.Entry.Author.ID">@Model.Entry.Author.Name</a><br />
-        @Model.Entry.Timestamp
+        Posted by: <a href="/account/details/@Model.Entry.Author.ID">@Model.Entry.Author.Name</a><br />
+        @Model.Entry.Timestamp.ToString("ddd MMM yyyy - HH:mm")
     </div>
     <div class="span1">        
     @if (Request.IsAuthenticated)
