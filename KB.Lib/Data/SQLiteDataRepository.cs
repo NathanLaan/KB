@@ -47,10 +47,35 @@ namespace KB.Lib.Data
                     SQLiteTransaction transaction = sqliteConnection.BeginTransaction(System.Data.IsolationLevel.RepeatableRead);
                     foreach (Tag tag in tagList)
                     {
-                        SQLiteCommand sqlCommand = new SQLiteCommand(SQLiteDataRepository.SQL_ACCOUNT_INSERT, sqliteConnection);
-                        sqlCommand.Parameters.AddWithValue("@Tag", tag.Name);
-                        object returnValue = sqlCommand.ExecuteScalar();
-                        int id = int.Parse(returnValue.ToString());
+                        bool found = false;
+                        try
+                        {
+                            SQLiteCommand sqlCommand = new SQLiteCommand("SELECT ID FROM Tag WHERE Name=@Name", sqliteConnection);
+                            sqlCommand.Parameters.AddWithValue("@Name", tag.Name);
+                            object returnValue = sqlCommand.ExecuteScalar();
+                            if (returnValue != null)
+                            {
+                                try
+                                {
+                                    int id = int.Parse(returnValue.ToString());
+                                    found = true;
+                                }
+                                catch
+                                {
+                                }
+                            }
+                            else
+                            {
+                                found = true;
+                            }
+                        }
+                        catch
+                        {
+                        }
+                        if (!found)
+                        {
+                            // TODO: insert Tag
+                        }
                     }
                 }
             }
