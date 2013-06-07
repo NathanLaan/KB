@@ -47,7 +47,6 @@ namespace KB.Lib.Data
                     SQLiteTransaction transaction = sqliteConnection.BeginTransaction(System.Data.IsolationLevel.RepeatableRead);
                     foreach (Tag tag in tagList)
                     {
-<<<<<<< HEAD
                         bool found = false;
                         try
                         {
@@ -77,12 +76,6 @@ namespace KB.Lib.Data
                         {
                             // TODO: insert Tag
                         }
-=======
-                        SQLiteCommand sqlCommand = new SQLiteCommand("SELECT ID FROM Tag WHERE Name=@Name", sqliteConnection, transaction);
-                        sqlCommand.Parameters.AddWithValue("@Name", tag.Name);
-                        object returnValue = sqlCommand.ExecuteScalar();
-                        int id = int.Parse(returnValue.ToString());
->>>>>>> 6c190c45d9450ac7c90fd1bbe20960d5f5455cd2
                     }
                 }
             }
